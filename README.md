@@ -1,3 +1,3 @@
-A project for Web Development Course
+A project for Introduction to Web Programming Course
 
 Music streaming application
