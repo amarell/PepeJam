@@ -1,0 +1,12 @@
+{
+    "name": "amar/project",
+    "description": "Music streaming application",
+    "license": "apache2",
+    "authors": [
+        {
+            "name": "amarell",
+            "email": "mujagicamar@gmail.com"
+        }
+    ],
+    "require": {}
+}
