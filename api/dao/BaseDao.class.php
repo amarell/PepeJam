@@ -10,7 +10,7 @@ class BaseDao{
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       // set the PDO error mode to exception
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      echo "Connected successfully <br> Amar was here <br>";
+      //echo "Connected successfully <br> Amar was here <br>";
     } catch(PDOException $e) {
       throw $e;
     }
@@ -21,7 +21,7 @@ class BaseDao{
   }
 
   public function update($table, $entity){
-    
+
   }
 
   public function query($query, $params){
