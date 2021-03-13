@@ -12,7 +12,7 @@ class BaseDao{
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       echo "Connected successfully <br> Amar was here <br>";
     } catch(PDOException $e) {
-      echo "Connection failed: " . $e->getMessage();
+      throw $e;
     }
   }
 
@@ -24,12 +24,15 @@ class BaseDao{
 
   }
 
-  public function query(){
-
+  public function query($query, $params){
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function query_unique(){
-
+  public function query_unique($query, $params){
+    $result = $this->query($query, $params);
+    return reset($result);
   }
 }
 ?>
