@@ -10,7 +10,7 @@ $user_dao = new UserDao();
 //$user = $user_dao->get_user_by_email("mujagicamar@gmail.com");
 
 $user = [
-  "name"=>"Amar",
+  "name"=>"amonkee",
 ];
 
 $user_dao->update_user(9,$user);

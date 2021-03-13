@@ -20,8 +20,17 @@ class BaseDao{
 
   }
 
-  public function update($table, $entity){
+  public function update($table, $id, $entity, $primary_key = "id"){
 
+    $query = "UPDATE ${table} SET ";
+    foreach($entity as $name => $value){
+      $query .= $name ."= :".$name.", ";
+    }
+    $query = substr($query, 0, -2);
+    $query .= " WHERE ${primary_key} = :id";
+    $stmt= $this->connection->prepare($query);
+    $entity['id'] = $id;
+    $stmt->execute($entity);
   }
 
   public function query($query, $params){
