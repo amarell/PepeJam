@@ -9,9 +9,11 @@ require_once dirname(__FILE__)."/dao/ArtistDao.class.php";
 
 $artist_dao = new ArtistDao();
 
-$artist = $artist_dao->get_artist_by_name("aMAR");
+$artist = [
+  "artist_name" => "amarrel0",
+  "number_of_followers" => 999
+];
 
-
-print_r($artist);
+$artist_dao->update_artist(2, $artist);
 
 ?>
