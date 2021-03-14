@@ -5,19 +5,13 @@ error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/AccountDao.class.php";
+require_once dirname(__FILE__)."/dao/ArtistDao.class.php";
 
-$user_dao = new UserDao();
-//$user = $user_dao->get_user_by_email("mujagicamar@gmail.com");
+$artist_dao = new ArtistDao();
 
-$user1 = [
-  "username"=>"amr",
-  "password"=>"123",
-  "email"=>"amar.pepe@jam.com"
-];
-
-$user = $user_dao->add_user($user1);
+$artist = $artist_dao->get_artist_by_name("aMAR");
 
 
-print_r($user);
+print_r($artist);
 
 ?>
