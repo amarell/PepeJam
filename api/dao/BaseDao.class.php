@@ -16,8 +16,26 @@ class BaseDao{
     }
   }
 
-  public function insert(){
+  public function insert($table, $entity, $primary_key = "id"){
+    $query = "INSERT INTO ${table} (";
 
+    foreach ($entity as $column => $value) {
+      $query .= $column.", ";
+    }
+
+    $query = substr($query, 0, -2);
+    $query .= ") VALUES (";
+
+    foreach ($entity as $column => $value) {
+      $query .= ":".$column.", ";
+    }
+
+    $query = substr($query, 0, -2);
+    $query .= ")";
+
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute($entity);
+    $user[$primary_key] = $this->connection->lastInsertId();
   }
 
   public function update($table, $id, $entity, $primary_key = "id"){
