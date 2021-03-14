@@ -6,14 +6,15 @@ error_reporting(E_ALL);
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/AccountDao.class.php";
 require_once dirname(__FILE__)."/dao/ArtistDao.class.php";
+require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
 
-$artist_dao = new ArtistDao();
+$album_dao = new AlbumDao();
 
-$artist = [
-  "artist_name" => "amarrel0",
-  "number_of_followers" => 999
+$album = [
+  "album_name" => "Master of PHP",
+  "album_artist" => 2
 ];
 
-$artist_dao->update_artist(2, $artist);
+$album_dao->add_album($album);
 
 ?>
