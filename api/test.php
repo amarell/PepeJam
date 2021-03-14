@@ -7,14 +7,13 @@ require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/AccountDao.class.php";
 require_once dirname(__FILE__)."/dao/ArtistDao.class.php";
 require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
+require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
+require_once dirname(__FILE__)."/dao/PlaylistDao.class.php";
 
-$album_dao = new AlbumDao();
+$playlist_dao = new PlaylistDao();
 
-$album = [
-  "album_name" => "Master of PHP",
-  "album_artist" => 2
-];
 
-$album_dao->add_album($album);
+$playlist = $playlist_dao->get_playlists_by_user_id(17);
 
+print_r($playlist);
 ?>
