@@ -3,6 +3,10 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class AlbumDao extends BaseDao{
 
+  public function __construct(){
+    parent::__construct("albums");
+  }
+
   public function get_album_by_id($id){
     return $this->query_unique("SELECT * FROM albums WHERE album_id = :album_id", ["album_id" => $id]);
   }

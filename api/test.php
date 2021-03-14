@@ -10,10 +10,10 @@ require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
 require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
 require_once dirname(__FILE__)."/dao/PlaylistDao.class.php";
 
-$playlist_dao = new PlaylistDao();
+$user_dao = new UserDao("users");
+
+$user = $user_dao->get_by_id(17, "user_id");
 
 
-$playlist = $playlist_dao->get_playlists_by_user_id(17);
-
-print_r($playlist);
+print_r($user);
 ?>

@@ -3,6 +3,10 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class PlaylistDao extends BaseDao{
 
+  public function __construct(){
+    parent::__construct("playlists");
+  }
+
   public function get_playlist_by_id($id){
     return $this->query_unique("SELECT * FROM playlists WHERE playlist_id = :playlist_id", ["playlist_id" => $id]);
   }

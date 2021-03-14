@@ -2,6 +2,10 @@
 require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class ArtistDao extends BaseDao{
+
+  public function __construct(){
+    parent::__construct("artists");
+  }
   /*
   * Finds the artist that matches the specified id
   */
@@ -14,6 +18,10 @@ class ArtistDao extends BaseDao{
   */
   public function get_artist_by_name($name){
     return $this->query("SELECT * FROM artists WHERE artist_name = :artist_name ORDER BY number_of_followers DESC", ["artist_name"=>$name]);
+  }
+
+  public function get_all_artists(){
+    return $this->query("SELECT * FROM artists", []);
   }
 
   public function add_artist($artist){
