@@ -9,19 +9,12 @@ require_once dirname(__FILE__)."/dao/ArtistDao.class.php";
 require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
 require_once dirname(__FILE__)."/dao/AlbumDao.class.php";
 require_once dirname(__FILE__)."/dao/PlaylistDao.class.php";
-
-$user_dao = new UserDao();
-
-$user = [
-  "username" => "amokney",
-  "password" => "666"
-];
-
-$user_dao->update(1, $user, "user_id");
+require_once dirname(__FILE__)."/dao/SongDao.class.php";
 
 
+$dao = new SongDao();
 
+$songs = $dao->get_songs_by_artist(2);
 
-
-print_r($user_dao->get_by_id(1, "user_id"));
+print_r($songs);
 ?>
