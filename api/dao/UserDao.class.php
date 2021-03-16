@@ -7,13 +7,6 @@ class UserDao extends BaseDao{
     parent::__construct("users");
   }
 
-  /*
-  public function get_user_by_id($id){
-    return $this->query_unique("SELECT * FROM users WHERE user_id=:id", ["id"=>$id]);
-  }
-
-  */
-
   public function get_user_by_email($email){
     return $this->query_unique("SELECT * FROM users WHERE email=:email", ["email"=>$email]);
   }
@@ -22,16 +15,10 @@ class UserDao extends BaseDao{
     return $this->query("SELECT * FROM users", []);
   }
 
-  /*
-  public function add_user($user){
-    $this->insert("users", $user, "user_id");
-    return $user;
+  public function update_user_by_email($email, $user){
+    $this->update("users", $email, $user, "email");
   }
 
-  public function update_user($id, $user){
-    $this->update("users", $id, $user, "user_id");
-  }
-  */
 
 }
 ?>

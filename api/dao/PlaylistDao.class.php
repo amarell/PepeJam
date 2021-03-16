@@ -7,10 +7,6 @@ class PlaylistDao extends BaseDao{
     parent::__construct("playlists");
   }
 
-  public function get_playlist_by_id($id){
-    return $this->query_unique("SELECT * FROM playlists WHERE playlist_id = :playlist_id", ["playlist_id" => $id]);
-  }
-
   public function get_playlists_by_user($username){
     return $this->query("SELECT P.playlist_id, P.name, U.username user FROM playlists P
                          JOIN users U ON P.user_id = U.user_id
@@ -22,13 +18,8 @@ class PlaylistDao extends BaseDao{
     return $this->query("SELECT * FROM playlists WHERE user_id = :user_id", ["user_id" => $user_id]);
   }
 
-  public function add_playlist($playlist){
-    $this->insert("playlists", $playlist, "playlist_id");
-    return $playlist;
-  }
-
-  public function update_playlist($id, $playlist){
-    $this->update("playlists", $id, $playlist, "playlist_id");
-  }
+  /*
+  * get_by_id, add, update and get_all functionality is covered by BaseDao
+  */
 }
 ?>
