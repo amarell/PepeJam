@@ -1,6 +1,13 @@
 <?php
 require_once dirname(__FILE__)."/../config.php";
 
+
+/**
+* The main class for interacting with the database
+* All other Dao classes inherit this class
+*/
+
+
 class BaseDao{
   protected $connection;
   private $table;
@@ -9,9 +16,7 @@ class BaseDao{
     $this->table = $table;
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
-      // set the PDO error mode to exception
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      //echo "Connected successfully <br> Amar was here <br>";
     } catch(PDOException $e) {
       throw $e;
     }
@@ -37,6 +42,7 @@ class BaseDao{
     $stmt = $this->connection->prepare($query);
     $stmt->execute($entity);
     $user[$primary_key] = $this->connection->lastInsertId();
+    return $entity;
   }
 
   protected function execute_update($table, $id, $entity, $primary_key = "id"){
@@ -63,7 +69,7 @@ class BaseDao{
   }
 
   public function add($entity, $primary_key = "id"){
-    $this->insert($this->table, $entity, $primary_key);
+    return $this->insert($this->table, $entity, $primary_key);
   }
 
   public function update($id, $entity, $primary_key = "id"){
@@ -74,8 +80,8 @@ class BaseDao{
     return $this->query_unique("SELECT * FROM ".$this->table." WHERE ${primary_key} = :id", ["id" => $id]);
   }
 
-  public function get_all(){
-    return $this->query("SELECT * FROM ".$this->table, []);
+  public function get_all($offset = 0, $limit = 3){
+    return $this->query("SELECT * FROM ".$this->table. " LIMIT ${limit} OFFSET ${offset}", []);
   }
 }
 ?>

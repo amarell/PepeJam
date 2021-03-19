@@ -12,9 +12,6 @@ require_once dirname(__FILE__)."/dao/PlaylistDao.class.php";
 require_once dirname(__FILE__)."/dao/SongDao.class.php";
 
 
-$dao = new SongDao();
 
-$songs = $dao->get_songs_by_artist(2);
 
-print_r($songs);
 ?>
