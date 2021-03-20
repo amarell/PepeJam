@@ -24,15 +24,9 @@ Flight::route('POST /users', function(){
 Flight::route('GET /users', function(){
   $offset = Flight::query("offset", 0);
   $limit = Flight::query("limit", 10);
-
   $search = Flight::query("search");
 
-  if($search){
-    print_r(Flight::user()->get_users($search, $offset, $limit));
-  }
-  else{
-    print_r(Flight::user()->get_all($offset, $limit));
-  }
+  Flight::json(Flight::userService()->get_users($search, $offset, $limit));
 
   //Flight::json(Flight::user()->get_all($_GET["offset"] = 0, $_GET["limit"] = 25));
 });
