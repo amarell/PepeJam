@@ -82,8 +82,21 @@ class BaseDao{
     return $this->query_unique("SELECT * FROM ".$this->table." WHERE {$this->primary_key} = :id", ["id" => $id]);
   }
 
-  public function get_all($offset = 0, $limit = 10){
-    return $this->query("SELECT * FROM ".$this->table. " LIMIT ${limit} OFFSET ${offset}", []);
+  public function get_all($offset = 0, $limit = 10, $order = NULL){
+    if(is_null($order)){
+      $order = $this->primary_key;
+    }
+
+
+    switch(substr($order, 0, 1)){
+      case "-": $order_direction = "ASC"; break;
+      case "+": $order_direction = "DESC"; break;
+      default: throw new Exception("Invalid format. First character should be either + or -"); break;
+    }
+
+    $order_column = substr($order, 1);
+
+    return $this->query("SELECT * FROM ".$this->table. " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}", []);
   }
 }
 ?>

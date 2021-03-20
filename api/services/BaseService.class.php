@@ -2,7 +2,7 @@
 
 class BaseService{
   protected $dao;
-  protected $primary_key;
+  public $primary_key;
 
   public function get_by_id($id){
     return $this->dao->get_by_id($id);

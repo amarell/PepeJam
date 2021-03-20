@@ -29,9 +29,11 @@ Flight::route('GET /users/confirm/@token', function($token){
 
 Flight::route('GET /users', function(){
   $offset = Flight::query("offset", 0);
-  $limit = Flight::query("limit", 10);
+  $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
-  Flight::json(Flight::userService()->get_users($search, $offset, $limit));
+  $order = Flight::query("order");
+
+  Flight::json(Flight::userService()->get_users($search, $offset, $limit, $order));
 
   //Flight::json(Flight::user()->get_all($_GET["offset"] = 0, $_GET["limit"] = 25));
 });
