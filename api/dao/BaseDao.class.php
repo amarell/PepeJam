@@ -57,7 +57,7 @@ class BaseDao{
     $stmt->execute($entity);
   }
 
-  protected function query($query, $params){
+  public function query($query, $params){
     $stmt = $this->connection->prepare($query);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -80,7 +80,7 @@ class BaseDao{
     return $this->query_unique("SELECT * FROM ".$this->table." WHERE ${primary_key} = :id", ["id" => $id]);
   }
 
-  public function get_all($offset = 0, $limit = 3){
+  public function get_all($offset = 0, $limit = 10){
     return $this->query("SELECT * FROM ".$this->table. " LIMIT ${limit} OFFSET ${offset}", []);
   }
 }

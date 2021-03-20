@@ -7,6 +7,9 @@ require_once dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/dao/BaseDao.class.php";
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 
+/* Register DAO layer */
+Flight::register('user', 'UserDao');
+
 /* Include all routes */
 require_once dirname(__FILE__)."/routes/users.php";
 
@@ -18,8 +21,7 @@ Flight::map('query', function($name, $default_value = NULL){
   return $query_param;
 });
 
-/* Register DAO layer */
-Flight::register("user", "UserDao");
+
 
 Flight::start();
 
