@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 class ArtistDao extends BaseDao{
 
   public function __construct(){
-    parent::__construct("artists");
+    parent::__construct("artists", "artist_id");
   }
 
   public function get_artist_by_name($name){

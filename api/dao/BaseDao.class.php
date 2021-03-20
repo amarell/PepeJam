@@ -11,9 +11,11 @@ require_once dirname(__FILE__)."/../config.php";
 class BaseDao{
   protected $connection;
   private $table;
+  private $primary_key;
 
-  public function __construct($table){
+  public function __construct($table, $primary_key){
     $this->table = $table;
+    $this->primary_key = $primary_key;
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -22,7 +24,7 @@ class BaseDao{
     }
   }
 
-  protected function insert($table, $entity, $primary_key = "id"){
+  protected function insert($table, $entity){
     $query = "INSERT INTO ${table} (";
 
     foreach ($entity as $column => $value) {
@@ -41,17 +43,17 @@ class BaseDao{
 
     $stmt = $this->connection->prepare($query);
     $stmt->execute($entity);
-    $user[$primary_key] = $this->connection->lastInsertId();
+    $user[$this->primary_key] = $this->connection->lastInsertId();
     return $entity;
   }
 
-  protected function execute_update($table, $id, $entity, $primary_key = "id"){
+  protected function execute_update($table, $id, $entity){
     $query = "UPDATE ${table} SET ";
     foreach($entity as $name => $value){
       $query .= $name ."= :".$name.", ";
     }
     $query = substr($query, 0, -2);
-    $query .= " WHERE ${primary_key} = :id";
+    $query .= " WHERE {$this->primary_key} = :id";
     $stmt= $this->connection->prepare($query);
     $entity['id'] = $id;
     $stmt->execute($entity);
@@ -68,16 +70,16 @@ class BaseDao{
     return reset($result);
   }
 
-  public function add($entity, $primary_key = "id"){
-    return $this->insert($this->table, $entity, $primary_key);
+  public function add($entity){
+    return $this->insert($this->table, $entity);
   }
 
-  public function update($id, $entity, $primary_key = "id"){
-    $this->execute_update($this->table, $id, $entity, $primary_key);
+  public function update($id, $entity){
+    $this->execute_update($this->table, $id, $entity);
   }
 
-  public function get_by_id($id, $primary_key = "id"){
-    return $this->query_unique("SELECT * FROM ".$this->table." WHERE ${primary_key} = :id", ["id" => $id]);
+  public function get_by_id($id){
+    return $this->query_unique("SELECT * FROM ".$this->table." WHERE {$this->primary_key} = :id", ["id" => $id]);
   }
 
   public function get_all($offset = 0, $limit = 10){
