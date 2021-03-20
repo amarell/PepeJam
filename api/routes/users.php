@@ -1,7 +1,7 @@
 <?php
 
 Flight::route('GET /user/@id', function($id){
-  Flight::json(Flight::user()->get_by_id($id));
+  Flight::json(Flight::userService()->get_by_id($id));
 });
 
 Flight::route('PUT /user/@id', function($id){
@@ -13,6 +13,17 @@ Flight::route('POST /users', function(){
   $user = Flight::request()->data->getData();
   $user["created_at"] = date("Y-m-d H:i:s");
   Flight::json(Flight::userService()->add($user));
+});
+
+Flight::route('POST /users/register', function(){
+  $user = Flight::request()->data->getData();
+  Flight::json(Flight::userService()->register($user));
+});
+
+Flight::route('GET /users/confirm/@token', function($token){
+  $user = Flight::userService()->confirm($token);
+  Flight::json($user);
+  Flight::json(["message" => "Your account has been successfully activated!"]);
 });
 
 
