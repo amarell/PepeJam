@@ -11,6 +11,20 @@ class ArtistDao extends BaseDao{
     return $this->query("SELECT * FROM artists WHERE artist_name = :artist_name ORDER BY number_of_followers DESC", ["artist_name"=>$name]);
   }
 
+  public function get_artists($search, $offset, $limit, $order){
+    if(is_null($order)){
+      $order = "-artist_id";
+    }
+
+    list($order_column, $order_direction) = self::parse_order($order);
+
+    return $this->query("SELECT * FROM artists
+                         WHERE LOWER(artist_name) LIKE LOWER('%".$search."%')
+                         ORDER BY ${order_column} ${order_direction}
+                         LIMIT ${limit} OFFSET ${offset}",
+                         []);
+  }
+
 
   /*
   * get_by_id, add, update and get_all functionality is covered by BaseDao

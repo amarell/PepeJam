@@ -13,6 +13,21 @@ class BaseDao{
   private $table;
   private $primary_key;
 
+  public function beginTransaction(){
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+    $this->connection->beginTransaction();
+  }
+
+  public function commit(){
+    $this->connection->commit();
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+  }
+
+  public function rollBack(){
+    $this->connection->rollBack();
+    $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+  }
+
   public static function parse_order($order){
     switch(substr($order, 0, 1)){
       case "-": $order_direction = "ASC"; break;
@@ -21,8 +36,8 @@ class BaseDao{
     }
 
     $order_column = substr($order, 1);
-
     //TODO: prevent SQL injection
+
     return [$order_column, $order_direction];
   }
 
@@ -32,6 +47,7 @@ class BaseDao{
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     } catch(PDOException $e) {
       throw $e;
     }
