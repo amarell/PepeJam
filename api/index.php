@@ -7,6 +7,14 @@ require_once dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/ArtistService.class.php";
 
+Flight::set('flight.log_errors', true);
+
+
+/* Error handling for API*/
+Flight::map('error', function(Exception $ex){
+  Flight::json(["message" => $ex->getMessage()], $ex->getCode());
+});
+
 /* Register Bussiness Logic Layer services */
 Flight::register('userService', 'UserService');
 Flight::register('artistService', 'ArtistService');
