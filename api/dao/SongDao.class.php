@@ -19,5 +19,19 @@ class SongDao extends BaseDao{
                          LIMIT ${limit} OFFSET ${offset}",
                          ["artist_id" => $artist_id]);
   }
+
+  public function get_songs($search, $offset, $limit, $order){
+    if(is_null($order)){
+      $order = "-song_id";
+    }
+
+    list($order_column, $order_direction) = self::parse_order($order);
+
+    return $this->query("SELECT * FROM songs
+                         WHERE LOWER(song_name) LIKE LOWER('%".$search."%')
+                         ORDER BY ${order_column} ${order_direction}
+                         LIMIT ${limit} OFFSET ${offset}",
+                         []);
+  }
 }
 ?>

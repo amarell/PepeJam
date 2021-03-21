@@ -11,7 +11,7 @@ class SongService extends BaseService{
 
   public function get_songs($search, $offset, $limit, $order){
     if($search){
-      return $this->dao->get_artists($search, $offset, $limit, $order);
+      return $this->dao->get_songs($search, $offset, $limit, $order);
     }
     else{
       return $this->dao->get_all($offset, $limit, $order);
