@@ -100,6 +100,19 @@ class BaseDao{
   }
 
   public function add($entity){
+    /*
+    try {
+      return $this->insert($this->table, $entity);
+    } catch (\Exception $e) {
+      if(str_contains($e->getMessage(), "users.username_UNIQUE")){
+        throw new Exception("Account with same username already exists in the database", 400, $e);
+      }
+      else{
+        throw $e;
+      }
+    }*/
+
+
     return $this->insert($this->table, $entity);
   }
 

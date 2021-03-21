@@ -6,22 +6,26 @@ error_reporting(E_ALL);
 require_once dirname(__FILE__)."/../vendor/autoload.php";
 require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/ArtistService.class.php";
+require_once dirname(__FILE__)."/services/SongService.class.php";
 
 Flight::set('flight.log_errors', true);
 
 
 /* Error handling for API*/
+/*
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode());
-});
+});*/
 
 /* Register Bussiness Logic Layer services */
 Flight::register('userService', 'UserService');
 Flight::register('artistService', 'ArtistService');
+Flight::register('songService', "SongService");
 
 /* Include all routes */
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/artists.php";
+require_once dirname(__FILE__)."/routes/songs.php";
 
 /* Utility function for reading parameters from the URL*/
 Flight::map('query', function($name, $default_value = NULL){
