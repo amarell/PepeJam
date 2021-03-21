@@ -13,6 +13,19 @@ class BaseDao{
   private $table;
   private $primary_key;
 
+  public static function parse_order($order){
+    switch(substr($order, 0, 1)){
+      case "-": $order_direction = "ASC"; break;
+      case "+": $order_direction = "DESC"; break;
+      default: throw new Exception("Invalid format. First character should be either + or -"); break;
+    }
+
+    $order_column = substr($order, 1);
+
+    //TODO: prevent SQL injection
+    return [$order_column, $order_direction];
+  }
+
   public function __construct($table, $primary_key){
     $this->table = $table;
     $this->primary_key = $primary_key;
@@ -84,19 +97,14 @@ class BaseDao{
 
   public function get_all($offset = 0, $limit = 10, $order = NULL){
     if(is_null($order)){
-      $order = $this->primary_key;
+      $order = "-".$this->primary_key;
     }
 
+    list($order_column, $order_direction) = self::parse_order($order);
 
-    switch(substr($order, 0, 1)){
-      case "-": $order_direction = "ASC"; break;
-      case "+": $order_direction = "DESC"; break;
-      default: throw new Exception("Invalid format. First character should be either + or -"); break;
-    }
-
-    $order_column = substr($order, 1);
-
-    return $this->query("SELECT * FROM ".$this->table. " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}", []);
+    return $this->query("SELECT * FROM ".$this->table.
+                        " ORDER BY ${order_column} ${order_direction}
+                         LIMIT ${limit} OFFSET ${offset}", []);
   }
 }
 ?>
