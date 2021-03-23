@@ -21,8 +21,6 @@ Flight::route('GET /albums', function(){
   $order = Flight::query("order");
 
   Flight::json(Flight::albumService()->get_albums($search, $offset, $limit, $order));
-
-  //Flight::json(Flight::user()->get_all($_GET["offset"] = 0, $_GET["limit"] = 25));
 });
 
 ?>

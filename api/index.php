@@ -8,6 +8,7 @@ require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/ArtistService.class.php";
 require_once dirname(__FILE__)."/services/SongService.class.php";
 require_once dirname(__FILE__)."/services/AlbumService.class.php";
+require_once dirname(__FILE__)."/services/PlaylistService.class.php";
 
 Flight::set('flight.log_errors', true);
 
@@ -22,13 +23,16 @@ Flight::map('error', function(Exception $ex){
 Flight::register('userService', 'UserService');
 Flight::register('artistService', 'ArtistService');
 Flight::register('songService', "SongService");
-Flight::register('albumService', 'UserService');
+Flight::register('albumService', 'AlbumService');
+Flight::register('playlistService', 'PlaylistService');
+
 
 /* Include all routes */
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/artists.php";
 require_once dirname(__FILE__)."/routes/songs.php";
 require_once dirname(__FILE__)."/routes/albums.php";
+require_once dirname(__FILE__)."/routes/playlists.php";
 
 /* Utility function for reading parameters from the URL*/
 Flight::map('query', function($name, $default_value = NULL){
