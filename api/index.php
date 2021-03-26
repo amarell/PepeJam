@@ -42,6 +42,14 @@ Flight::map('query', function($name, $default_value = NULL){
   return $query_param;
 });
 
+/* Swagger documentation */
+
+Flight::route('GET /swagger', function(){
+  require_once dirname(__FILE__)."/../vendor/autoload.php";
+  $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
+  header('Content-Type: application/json');
+  echo $openapi->toJson();
+});
 
 
 Flight::start();
