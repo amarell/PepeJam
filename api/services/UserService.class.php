@@ -1,11 +1,15 @@
 <?php
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/BaseService.class.php";
+require_once dirname(__FILE__)."/../clients/SMTPClient.class.php";
 
 class UserService extends BaseService{
 
+  private $smtpClient;
+
   public function __construct(){
     $this->dao = new UserDao();
+    $this->smtpClient = new SMTPClient();
   }
 
   public function get_users($search, $offset, $limit, $order){
@@ -29,7 +33,7 @@ class UserService extends BaseService{
 
     $info = $this->dao->get_user_by_email($user["email"]);
 
-    //TODO: send email with token
+    $this->smtpClient->send_token_to_registered_user($info);
 
     return $info;
   }
