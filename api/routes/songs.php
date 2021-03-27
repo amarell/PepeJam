@@ -13,7 +13,7 @@
 
  /**
   * @OA\Get(path="/song/{song_id}", tags={"song"},
-  *     @OA\Parameter(type="integer", in="query", name="song_id", default=0, description="Id of the song"),
+  *     @OA\Parameter(type="integer", in="path", name="song_id", default=0, description="Id of the song"),
   *     @OA\Response(response="200", description="List song from database with a given id")
   * )
   */
@@ -22,8 +22,18 @@ Flight::route('GET /song/@id', function($id){
 });
 
 /**
- * @OA\Put(path="/{song_id}", tags={"song"},
- *     @OA\Parameter(type="integer", in="query", name="song_id", default=0, description="Id of the song"),
+ * @OA\Put(path="/song/{song_id}", tags={"song"},
+ *     @OA\Parameter(type="integer", in="path", name="song_id", default=0, description="Id of the song"),
+ *     @OA\RequestBody(description="Data that needs to be updated", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="song_name", type="string", example="Blinding Lights",	description="Name of the song" ),
+ *    				 @OA\Property(property="song_duration", type="double", example="4",	description="Duration of the song in minutes" ),
+ *             @OA\Property(property="number_of_plays", type="integer", example="1000",	description="How many times the song was played" ),
+ *             @OA\Property(property="artist_id", type="integer", example="1",	description="Id of the artist" )
+ *          )
+ *       )
+ *     ),
  *     @OA\Response(response="200", description="Update song with given id")
  * )
  */
@@ -55,7 +65,7 @@ Flight::route('GET /songs', function(){
 
 /**
  * @OA\Get(path="/songs/{artist_id}", tags={"song"},
- *     @OA\Parameter(type="integer", in="query", name="artist_id", default=0, description="Id of the artist"),
+ *     @OA\Parameter(type="integer", in="path", name="artist_id", default=0, description="Id of the artist"),
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="order", default="-song_id", description="Sorting for return elements. -column_name ascending order by column_name or +column_name descending order by column_name"),
@@ -73,6 +83,16 @@ Flight::route('GET /songs/@artist_id', function($artist_id){
 
 /**
  * @OA\Post(path="/songs", tags={"song"},
+ *   @OA\RequestBody(description="Basic song info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="song_name", required="true", type="string", example="Blinding Lights",	description="Name of the song" ),
+ *    				 @OA\Property(property="song_duration", type="double", example="4",	description="Duration of the song in minutes" ),
+ *             @OA\Property(property="number_of_plays", type="integer", example="1000",	description="How many times the song was played" ),
+ *             @OA\Property(property="artist_id", type="integer", example="1",	description="Id of the artist" )
+ *          )
+ *       )
+ *     ),
  *     @OA\Response(response="200", description="Add a song")
  * )
  */

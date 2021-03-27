@@ -51,6 +51,10 @@ Flight::route('GET /swagger', function(){
   echo $openapi->toJson();
 });
 
+Flight::route('GET /', function(){
+  Flight::redirect("/docs");
+});
+
 
 Flight::start();
 
