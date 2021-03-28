@@ -39,6 +39,18 @@ class UserService extends BaseService{
     return $info;
   }
 
+  public function confirm($token){
+    $user = $this->dao->get_user_by_token($token);
+
+    if(!isset($user["user_id"])){
+      throw new Exception("The user doesn't exist");
+    }
+
+    $this->dao->update($user["user_id"], ["status" => "ACTIVE", "token" => NULL]);
+    $user = $this->dao->get_user_by_token($token);
+    return $user;
+  }
+
   public function login($user){
     $db_user = $this->dao->get_user_by_email($user["email"]);
 
@@ -65,7 +77,7 @@ class UserService extends BaseService{
     }
 
     //generate new token and update in db
-    $db_user = $this->update($db_user["user_id"], ["token" => md5(random_bytes(16))]);
+    $db_user = $this->update($db_user["user_id"], ["token" => md5(random_bytes(16)), "token_created_at" => date(Config::DATE_FORMAT)]);
     //send mail with token
     $this->smtpClient->send_recovery_token($db_user);
   }
@@ -77,20 +89,14 @@ class UserService extends BaseService{
       throw new Exception("User doesn't exist", 400);
     }
 
+    if(strtotime(date(Config::DATE_FORMAT)) - strtotime($db_user["token_created_at"]) < 300){
+      throw new Exception("You have to wait at least 5 minutes before reseting password again", 400);
+    }
+
     $this->update($db_user["user_id"], ["password" => md5($user["password"]), "token" => NULL]);
   }
 
-  public function confirm($token){
-    $user = $this->dao->get_user_by_token($token);
 
-    if(!isset($user["user_id"])){
-      throw new Exception("The user doesn't exist");
-    }
-
-    $this->dao->update($user["user_id"], ["status" => "ACTIVE", "token" => NULL]);
-    $user = $this->dao->get_user_by_token($token);
-    return $user;
-  }
 
 }
 
