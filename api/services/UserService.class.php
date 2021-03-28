@@ -28,6 +28,7 @@ class UserService extends BaseService{
 
     $user["created_at"] = date(Config::DATE_FORMAT);
     $user["token"] = md5(random_bytes(16));
+    $user["password"] = md5($user["password"]);
 
     parent::add($user);
 
@@ -36,6 +37,24 @@ class UserService extends BaseService{
     $this->smtpClient->send_token_to_registered_user($info);
 
     return $info;
+  }
+
+  public function login($user){
+    $db_user = $this->dao->get_user_by_email($user["email"]);
+
+    if(!isset($db_user["user_id"])){
+      throw new Exception("User doesn't exist", 400);
+    }
+
+    if($db_user["status"] != 'ACTIVE'){
+      throw new Exception("User not active", 400);
+    }
+
+    if($db_user["password"] != md5($user['password'])){
+       throw new Exception("Invalid password or email", 400);
+    }
+
+    return $db_user;
   }
 
   public function confirm($token){
