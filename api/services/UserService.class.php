@@ -77,7 +77,7 @@ class UserService extends BaseService{
       throw new Exception("User doesn't exist", 400);
     }
 
-    $this->update($db_user["user_id"], ["password" => md5($user["password"]), "token" => md5(random_bytes(16))]);
+    $this->update($db_user["user_id"], ["password" => md5($user["password"]), "token" => NULL]);
   }
 
   public function confirm($token){
@@ -87,7 +87,7 @@ class UserService extends BaseService{
       throw new Exception("The user doesn't exist");
     }
 
-    $this->dao->update($user["user_id"], ["status" => "ACTIVE"]);
+    $this->dao->update($user["user_id"], ["status" => "ACTIVE", "token" => NULL]);
     $user = $this->dao->get_user_by_token($token);
     return $user;
   }
