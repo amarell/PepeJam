@@ -102,13 +102,53 @@ Flight::route('GET /users/confirm/@token', function($token){
  *          )
  *       )
  *     ),
- *  @OA\Response(response="200", description="Message that user has been created.")
+ *  @OA\Response(response="200", description="Message that user has been logged in.")
  * )
  */
 Flight::route('POST /users/login', function(){
   $user = Flight::request()->data->getData();
   Flight::json(Flight::userService()->login($user));
 });
+
+
+/**
+ * @OA\Post(path="/users/forgot", tags={"users"}, description = "Send recovery link to user's email address",
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="email", required="true", type="string", example="myemail@gmail.com",	description="User's email address" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that recovery link has been sent")
+ * )
+ */
+Flight::route('POST /users/forgot', function(){
+  $user = Flight::request()->data->getData();
+  Flight::userService()->forgot($user);
+  Flight::json(["message" => "Recovery token has been sent to your email."]);
+});
+
+
+/**
+ * @OA\Post(path="/users/reset", tags={"users"}, description = "Reset the password",
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="token", required="true", type="string", example="123",	description="User's recovery token" ),
+  *    				 @OA\Property(property="password", required="true", type="string", example="123",	description="User's new password" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that password has been reset")
+ * )
+ */
+Flight::route('POST /users/reset', function(){
+  $user = Flight::request()->data->getData();
+  Flight::userService()->reset($user);
+  Flight::json(["message" => "Password reset successful"]);
+});
+
 
 /**
  * @OA\Get(path="/users", tags={"users"},

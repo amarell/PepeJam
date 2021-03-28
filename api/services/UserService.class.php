@@ -57,6 +57,29 @@ class UserService extends BaseService{
     return $db_user;
   }
 
+  public function forgot($user){
+    $db_user = $this->dao->get_user_by_email($user["email"]);
+
+    if(!isset($db_user["user_id"])){
+      throw new Exception("User doesn't exist", 400);
+    }
+
+    //generate new token and update in db
+    $db_user = $this->update($db_user["user_id"], ["token" => md5(random_bytes(16))]);
+    //send mail with token
+    $this->smtpClient->send_recovery_token($db_user);
+  }
+
+  public function reset($user){
+    $db_user = $this->dao->get_user_by_token($user["token"]);
+
+    if(!isset($db_user["user_id"])){
+      throw new Exception("User doesn't exist", 400);
+    }
+
+    $this->update($db_user["user_id"], ["password" => md5($user["password"]), "token" => md5(random_bytes(16))]);
+  }
+
   public function confirm($token){
     $user = $this->dao->get_user_by_token($token);
 
