@@ -3,6 +3,8 @@ require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../clients/SMTPClient.class.php";
 
+use \Firebase\JWT\JWT;
+
 class UserService extends BaseService{
 
   private $smtpClient;
@@ -66,7 +68,9 @@ class UserService extends BaseService{
        throw new Exception("Invalid password or email", 400);
     }
 
-    return $db_user;
+    $jwt = JWT::encode(["id" => $db_user["user_id"], "r" => $db_user["role"]], "JWT SECRET");
+
+    return ["token" => $jwt];
   }
 
   public function forgot($user){
