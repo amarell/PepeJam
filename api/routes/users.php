@@ -9,27 +9,15 @@ use \Firebase\JWT\JWT;
  * )
  */
 Flight::route('GET /user/@id', function($id){
-  $headers = getallheaders();
-  $token = @$headers["Authentication"];
-
-  try {
-    $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
-    if($decoded["id"] == $id){
-      Flight::json(Flight::userService()->get_by_id($id));
-    } else{
-      Flight::json(["message" => "That account is not for you"], 403);
-    }
-  } catch (\Exception $e) {
-    Flight::json(["message" => $e->getMessage()], 401);
+  if(Flight::get('user')["id"] != $id){
+    throw new Exception("This account is not for you!");
   }
-
-
-
+  Flight::json(Flight::userService()->get_by_id($id));
 });
 
 
 /**
- * @OA\Put(path="/user/{user_id}", tags={"users"}
+ * @OA\Put(path="/user/{user_id}", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="user_id", default=0, description="Id of the user that needs to be updated"),
  *     @OA\RequestBody(description="Data that needs to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -44,7 +32,7 @@ Flight::route('GET /user/@id', function($id){
  *          )
  *       )
  *     ),
- *     @OA\Response(response="200", description="Update song with given id")
+ *     @OA\Response(response="200", description="Update user with given id")
  * )
  */
 Flight::route('PUT /user/@id', function($id){
@@ -54,7 +42,7 @@ Flight::route('PUT /user/@id', function($id){
 
 
 /**
- * @OA\Post(path="/users", tags={"users"},
+ * @OA\Post(path="/users", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
@@ -77,7 +65,7 @@ Flight::route('POST /users', function(){
 
 
 /**
- * @OA\Post(path="/users/register", tags={"users"},
+ * @OA\Post(path="/users/register", tags={"users"}
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
@@ -98,7 +86,7 @@ Flight::route('POST /users/register', function(){
 
 
 /**
- * @OA\Get(path="/users/confirm/{token}", tags={"users"},
+ * @OA\Get(path="/users/confirm/{token}", tags={"users"}
  *     @OA\Parameter(type="string", in="path", name="token", default=123, description="Token for activating account"),
  *     @OA\Response(response="200", description="Message upon successful activation.")
  * )
@@ -111,7 +99,7 @@ Flight::route('GET /users/confirm/@token', function($token){
 
 
 /**
- * @OA\Post(path="/users/login", tags={"users"},
+ * @OA\Post(path="/users/login", tags={"users"}
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
@@ -169,7 +157,7 @@ Flight::route('POST /users/reset', function(){
 
 
 /**
- * @OA\Get(path="/users", tags={"users"},
+ * @OA\Get(path="/users", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search for a user by its username. Case insensitive search."),

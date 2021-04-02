@@ -28,13 +28,6 @@ Flight::register('albumService', 'AlbumService');
 Flight::register('playlistService', 'PlaylistService');
 
 
-/* Include all routes */
-require_once dirname(__FILE__)."/routes/users.php";
-require_once dirname(__FILE__)."/routes/artists.php";
-require_once dirname(__FILE__)."/routes/songs.php";
-require_once dirname(__FILE__)."/routes/albums.php";
-require_once dirname(__FILE__)."/routes/playlists.php";
-
 /* Utility function for reading parameters from the URL*/
 Flight::map('query', function($name, $default_value = NULL){
   $request = Flight::request();
@@ -55,6 +48,14 @@ Flight::route('GET /swagger', function(){
 Flight::route('GET /', function(){
   Flight::redirect("/docs");
 });
+
+/* Include all routes */
+require_once dirname(__FILE__)."/routes/middleware.php";
+require_once dirname(__FILE__)."/routes/users.php";
+require_once dirname(__FILE__)."/routes/artists.php";
+require_once dirname(__FILE__)."/routes/songs.php";
+require_once dirname(__FILE__)."/routes/albums.php";
+require_once dirname(__FILE__)."/routes/playlists.php";
 
 
 Flight::start();
