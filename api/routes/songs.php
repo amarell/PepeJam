@@ -9,6 +9,7 @@
  *       description="Devlopment environment"
  *   )
  * )
+ * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
 
  /**

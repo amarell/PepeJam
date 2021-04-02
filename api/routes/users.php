@@ -1,17 +1,35 @@
 <?php
+
+use \Firebase\JWT\JWT;
+
 /**
- * @OA\Get(path="/user/{user_id}", tags={"users"},
+ * @OA\Get(path="/user/{user_id}", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="user_id", default=0, description="Id of the user"),
  *     @OA\Response(response="200", description="List user from database with a given id")
  * )
  */
 Flight::route('GET /user/@id', function($id){
-  Flight::json(Flight::userService()->get_by_id($id));
+  $headers = getallheaders();
+  $token = @$headers["Authentication"];
+
+  try {
+    $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
+    if($decoded["id"] == $id){
+      Flight::json(Flight::userService()->get_by_id($id));
+    } else{
+      Flight::json(["message" => "That account is not for you"], 403);
+    }
+  } catch (\Exception $e) {
+    Flight::json(["message" => $e->getMessage()], 401);
+  }
+
+
+
 });
 
 
 /**
- * @OA\Put(path="/user/{user_id}", tags={"users"},
+ * @OA\Put(path="/user/{user_id}", tags={"users"}
  *     @OA\Parameter(type="integer", in="path", name="user_id", default=0, description="Id of the user that needs to be updated"),
  *     @OA\RequestBody(description="Data that needs to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",

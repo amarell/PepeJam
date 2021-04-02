@@ -10,6 +10,7 @@ require_once dirname(__FILE__)."/services/SongService.class.php";
 require_once dirname(__FILE__)."/services/AlbumService.class.php";
 require_once dirname(__FILE__)."/services/PlaylistService.class.php";
 
+
 Flight::set('flight.log_errors', true);
 
 
