@@ -2,35 +2,33 @@
 
 use \Firebase\JWT\JWT;
 
-/*
-Flight::before('start', function(&$params, &$output){
-  if(Flight::request()->url == "/swagger") return TRUE;
+/* middleware for regular users*/
+Flight::route('/user/*', function(){
   if(str_starts_with(Flight::request()->url, "/users/")) return TRUE;
 
-  $headers = getallheaders();
-  $token = @$headers["Authentication"];
-
   try {
-    $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
+    $user = (array)JWT::decode(Flight::header("Authentication"), Config::JWT_SECRET, array('HS256'));
     Flight::set('user', $decoded);
+    if(Flight::request()->method != "GET" && $user["r"] == "READ_ONLY_USER"){
+      throw new Exception("Read only user are not allowed to change", 403);
+    }
     return TRUE;
   } catch (\Exception $e) {
     Flight::json(["message" => $e->getMessage()], 401);
     die;
   }
 });
-*/
 
-
-Flight::route('*', function(){
+/* middleware for admins */
+Flight::route('/admin/*', function(){
   if(str_starts_with(Flight::request()->url, "/users/")) return TRUE;
 
-  $headers = getallheaders();
-  $token = @$headers["Authentication"];
-
   try {
-    $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
+    $user = (array)JWT::decode(Flight::header("Authentication"), Config::JWT_SECRET, array('HS256'));
     Flight::set('user', $decoded);
+    if($user["r"] != "ADMIN"){
+      throw new Exception("Admin access required", 403);
+    }
     return TRUE;
   } catch (\Exception $e) {
     Flight::json(["message" => $e->getMessage()], 401);

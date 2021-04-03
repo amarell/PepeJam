@@ -68,7 +68,7 @@ class UserService extends BaseService{
        throw new Exception("Invalid password or email", 400);
     }
 
-    $jwt = JWT::encode(["id" => $db_user["user_id"], "r" => $db_user["role"]], "JWT SECRET");
+    $jwt = JWT::encode(["id" => $db_user["user_id"], "r" => $db_user["role"]], Config::JWT_SECRET);
 
     return ["token" => $jwt];
   }
