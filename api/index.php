@@ -12,6 +12,9 @@ require_once dirname(__FILE__)."/services/AlbumService.class.php";
 require_once dirname(__FILE__)."/services/PlaylistService.class.php";
 
 
+/* include JWT */
+use \Firebase\JWT\JWT;
+
 Flight::set('flight.log_errors', true);
 
 

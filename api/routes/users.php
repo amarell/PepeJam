@@ -3,21 +3,45 @@
 use \Firebase\JWT\JWT;
 
 /**
- * @OA\Get(path="/user/{user_id}", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/playlists", tags={"users", "playlists"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
+ *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(type="string", in="query", name="order", default="-playlist_id", description="Sorting for return elements. -column_name ascending order by column_name or +column_name descending order by column_name"),
+ *     @OA\Response(response="200", description="Fetch playlists by a logged in user")
+ * )
+ */
+Flight::route('GET /user/playlists', function(){
+
+  $offset = Flight::query("offset", 0);
+  $limit = Flight::query("limit", 25);
+  $order = Flight::query("order");
+
+  Flight::json(Flight::playlistService()->get_playlists_by_user_id(Flight::get('user')['id'], $offset, $limit, $order));
+});
+
+
+/**
+ * @OA\Get(path="/user", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Response(response="200", description="List account from logged in user")
+ * )
+ */
+Flight::route('GET /user', function(){
+  Flight::json(Flight::userService()->get_by_id(Flight::get("user")["id"]));
+});
+
+/**
+ * @OA\Get(path="/admin/user/{user_id}", tags={"admin"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="user_id", default=0, description="Id of the user"),
  *     @OA\Response(response="200", description="List user from database with a given id")
  * )
  */
-Flight::route('GET /user/@id', function($id){
-  if(Flight::get('user')["id"] != $id){
-    throw new Exception("This account is not for you!");
-  }
+Flight::route('GET /admin/user/@id', function($id){
   Flight::json(Flight::userService()->get_by_id($id));
 });
 
 
 /**
- * @OA\Put(path="/user/{user_id}", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Put(path="/admin/user/{user_id}", tags={"admin"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="user_id", default=0, description="Id of the user that needs to be updated"),
  *     @OA\RequestBody(description="Data that needs to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -35,14 +59,14 @@ Flight::route('GET /user/@id', function($id){
  *     @OA\Response(response="200", description="Update user with given id")
  * )
  */
-Flight::route('PUT /user/@id', function($id){
+Flight::route('PUT /admin/user/@id', function($id){
   $user = Flight::userService()->update($id, Flight::request()->data->getData());
   Flight::json($user);
 });
 
 
 /**
- * @OA\Post(path="/users", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Post(path="/admin/users", tags={"admin"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
@@ -57,7 +81,7 @@ Flight::route('PUT /user/@id', function($id){
  *     @OA\Response(response="200", description="Added a user")
  * )
  */
-Flight::route('POST /users', function(){
+Flight::route('POST /admin/users', function(){
   $user = Flight::request()->data->getData();
   $user["created_at"] = date("Y-m-d H:i:s");
   Flight::json(Flight::userService()->add($user));
@@ -163,7 +187,7 @@ Flight::route('POST /reset', function(){
 
 
 /**
- * @OA\Get(path="/users", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/users", tags={"admin"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search for a user by its username. Case insensitive search."),
@@ -171,7 +195,7 @@ Flight::route('POST /reset', function(){
  *     @OA\Response(response="200", description="List users from database")
  * )
  */
-Flight::route('GET /users', function(){
+Flight::route('GET /admin/users', function(){
   $offset = Flight::query("offset", 0);
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
