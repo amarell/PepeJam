@@ -91,8 +91,8 @@ Flight::route('PUT /user/playlist/@id', function($id){
  * )
  */
 Flight::route('POST /admin/playlists', function(){
-  $user = Flight::request()->data->getData();
-  Flight::json(Flight::playlistService()->add($user));
+  $playlist = Flight::request()->data->getData();
+  Flight::json(Flight::playlistService()->add($playlist));
 });
 
 /**
