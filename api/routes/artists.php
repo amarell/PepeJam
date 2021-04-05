@@ -52,7 +52,7 @@ Flight::route('GET /artists', function(){
 
 
 /**
- * @OA\Post(path="/admin/artists", tags={"artist", "admin"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Post(path="/admin/artists", tags={"admin", "artist"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Basic artist info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
