@@ -10,6 +10,7 @@ Flight::route('/user/*', function(){
     if(Flight::request()->method != "GET" && $user["r"] == "READ_ONLY_USER"){
       throw new Exception("Read only user are not allowed to change anything.", 403);
     }
+    
     return TRUE;
   } catch (\Exception $e) {
     throw $e;
@@ -27,6 +28,7 @@ Flight::route('/admin/*', function(){
     if($user["r"] != "ADMIN"){
       throw new Exception("Admin access required", 403);
     }
+    
     return TRUE;
   } catch (\Exception $e) {
     Flight::json(["message" => $e->getMessage()], 401);

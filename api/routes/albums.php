@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @OA\Get(path="/album/{album_id}", tags={"everyone"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/album/{album_id}", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="album_id", default=0, description="Id of the album"),
- *     @OA\Response(response="200", description="List albums from database")
+ *     @OA\Response(response="200", description="List album from database")
  * )
  */
-Flight::route('GET /album/@id', function($id){
+Flight::route('GET /user/album/@id', function($id){
   Flight::json(Flight::albumService()->get_by_id($id));
 });
 
@@ -53,7 +53,7 @@ Flight::route('POST /admin/albums', function(){
 
 
  /**
- * @OA\Get(path="/albums", tags={"everyone"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/albums", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search for an album by its name. Case insensitive search."),
@@ -61,7 +61,7 @@ Flight::route('POST /admin/albums', function(){
  *     @OA\Response(response="200", description="List albums from database")
  * )
  */
-Flight::route('GET /albums', function(){
+Flight::route('GET /user/albums', function(){
   $offset = Flight::query("offset", 0);
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
