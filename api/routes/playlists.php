@@ -14,7 +14,7 @@ Flight::route('GET /admin/playlist/@id', function($id){
 
 
 /**
- * @OA\Get(path="/playlist/{playlist_id}", tags={"user", "playlist"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/playlist/{playlist_id}", tags={"users", "playlist"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="playlist_id", default=1, description="Id of the playlist"),
  *     @OA\Response(response="200", description="List playlist from database with a given id if it belongs to the logged in user")
  * )
@@ -52,7 +52,7 @@ Flight::route('PUT /admin/playlist/@id', function($id){
 
 
 /**
- * @OA\Put(path="/user/playlist/{playlist_id}", tags={"user", "playlist"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Put(path="/user/playlist/{playlist_id}", tags={"users", "playlist"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", name="playlist_id", default=1, description="Id of the playlist that needs to be updated"),
  *     @OA\RequestBody(description="Data that needs to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -96,7 +96,7 @@ Flight::route('POST /admin/playlists', function(){
 });
 
 /**
- * @OA\Post(path="/user/playlists", tags={"user", "playlist"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Post(path="/user/playlists", tags={"users", "playlist"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Basic playlist info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(

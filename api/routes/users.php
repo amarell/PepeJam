@@ -3,7 +3,7 @@
 use \Firebase\JWT\JWT;
 
 /**
- * @OA\Get(path="/user/playlists", tags={"users", "playlists"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/playlists", tags={"users", "playlist"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="order", default="-playlist_id", description="Sorting for return elements. -column_name ascending order by column_name or +column_name descending order by column_name"),
