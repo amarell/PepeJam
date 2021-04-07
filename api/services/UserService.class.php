@@ -49,7 +49,6 @@ class UserService extends BaseService{
     }
 
     $this->dao->update($user["user_id"], ["status" => "ACTIVE", "token" => NULL]);
-    $user = $this->dao->get_user_by_token($token);
     return $user;
   }
 
@@ -67,10 +66,8 @@ class UserService extends BaseService{
     if($db_user["password"] != md5($user['password'])){
        throw new Exception("Invalid password or email", 400);
     }
-
-    $jwt = JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME), "id" => $db_user["user_id"], "r" => $db_user["role"]], Config::JWT_SECRET);
-
-    return ["token" => $jwt];
+    
+    return $db_user;
   }
 
   public function forgot($user){
@@ -78,6 +75,19 @@ class UserService extends BaseService{
 
     if(!isset($db_user["user_id"])){
       throw new Exception("User doesn't exist", 400);
+    }
+
+    /**
+     * If the user never reset his password before, the token_created_at field will be set to NULL by default
+     * This piece of code checks if the token_created_at field is set
+     * If it is not set (it is NULL), that would mean that the user is resetting his password for the first time, 
+     * so there is no need to check how recent his last password reset was
+     * If it is set, that means that the user reset his password before, and therefore it will also check how recent it was
+     */
+    if(isset($db_user["token_created_at"])){
+      if(strtotime(date(Config::DATE_FORMAT)) - strtotime($db_user["token_created_at"]) < 5*60){
+        throw new Exception("You have to wait at least 5 minutes before reseting your password again", 400);
+      }
     }
 
     //generate new token and update in db
@@ -93,11 +103,13 @@ class UserService extends BaseService{
       throw new Exception("User doesn't exist", 400);
     }
 
-    if(strtotime(date(Config::DATE_FORMAT)) - strtotime($db_user["token_created_at"]) < 300){
-      throw new Exception("You have to wait at least 5 minutes before reseting password again", 400);
+    if(strtotime(date(Config::DATE_FORMAT)) - strtotime($db_user["token_created_at"]) > 5*60){
+      throw new Exception("Token expired - Try again with a new token.", 400);
     }
 
     $this->update($db_user["user_id"], ["password" => md5($user["password"]), "token" => NULL]);
+
+    return $db_user;
   }
 
 
