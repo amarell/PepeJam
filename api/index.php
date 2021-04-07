@@ -46,6 +46,12 @@ Flight::map('header', function($name){
   return @$headers[$name];
 });
 
+/* utility function for generating JWT token */
+Flight::map('jwt', function($user){
+  $jwt = JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME), "id" => $user["user_id"], "r" => $user["role"]], Config::JWT_SECRET);
+  return ["token" => $jwt];
+});
+
 /* Swagger documentation */
 
 Flight::route('GET /swagger', function(){
