@@ -89,7 +89,7 @@ Flight::route('POST /admin/users', function(){
 
 
 
- /**
+/**
  * @OA\Post(path="/register", tags={"users"},
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -112,7 +112,7 @@ Flight::route('POST /register', function(){
 
 
 
- /**
+/**
  * @OA\Get(path="/confirm/{token}", tags={"users"},
  *     @OA\Parameter(type="string", in="path", name="token", default=123, description="Temporary token for activating account"),
  *     @OA\Response(response="200", description="Message upon successfull activation.")
@@ -125,7 +125,7 @@ Flight::route('GET /confirm/@token', function($token){
 });
 
 
- /**
+/**
  * @OA\Post(path="/login", tags={"users"},
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",

@@ -35,8 +35,8 @@ class BaseDao{
       default: throw new Exception("Invalid format. First character should be either + or -"); break;
     }
 
-    $order_column = substr($order, 1);
-    //TODO: prevent SQL injection
+    //preventing SQL injection attacks
+    $order_column = trim($this->connection->quote(substr($order, 1)),"'");
 
     return [$order_column, $order_direction];
   }

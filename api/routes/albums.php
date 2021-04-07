@@ -52,7 +52,7 @@ Flight::route('POST /admin/albums', function(){
 });
 
 
- /**
+/**
  * @OA\Get(path="/user/albums", tags={"users"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
