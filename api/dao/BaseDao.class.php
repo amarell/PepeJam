@@ -36,7 +36,8 @@ class BaseDao{
     }
 
     //preventing SQL injection attacks
-    $order_column = trim($this->connection->quote(substr($order, 1)),"'");
+    /*$order_column = trim($this->connection->quote(substr($order, 1)),"'");*/
+    $order_column = substr($order,1);
 
     return [$order_column, $order_direction];
   }
