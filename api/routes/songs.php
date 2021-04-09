@@ -2,13 +2,11 @@
 
 /* Swagger documentation */
 /**
- * @OA\Info(title="PepeJam Official API", version="0.1"),
+ * @OA\Info(title="PepeJam Official API", version="0.2")
  * @OA\OpenApi(
- *   @OA\Server(
- *       url="http://localhost:8080/api/",
- *       description="Devlopment environment"
- *   )
- * )
+ *    @OA\Server(url="http://localhost:8080/api/", description="Development Environment" ),
+ *    @OA\Server(url="https://pepejam-cou6d.ondigitalocean.app/api/", description="Production Environment" )
+ * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
 
