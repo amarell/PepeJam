@@ -13,6 +13,18 @@ class BaseDao{
   private $table;
   private $primary_key;
 
+  public function __construct($table, $primary_key){
+    $this->table = $table;
+    $this->primary_key = $primary_key;
+    try {
+      $this->connection = new PDO("mysql:host=".Config::DB_HOST().";dbname=".Config::DB_SCHEME(), Config::DB_USERNAME(), Config::DB_PASSWORD());
+      $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    } catch(PDOException $e) {
+      throw $e;
+    }
+  }
+  
   public function beginTransaction(){
     $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
     $this->connection->beginTransaction();
@@ -42,17 +54,7 @@ class BaseDao{
     return [$order_column, $order_direction];
   }
 
-  public function __construct($table, $primary_key){
-    $this->table = $table;
-    $this->primary_key = $primary_key;
-    try {
-      $this->connection = new PDO("mysql:host=".Config::DB_HOST().";dbname=".Config::DB_SCHEME(), Config::DB_USERNAME(), Config::DB_PASSWORD());
-      $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    } catch(PDOException $e) {
-      throw $e;
-    }
-  }
 
   protected function insert($table, $entity){
     $query = "INSERT INTO ${table} (";
