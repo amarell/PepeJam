@@ -24,7 +24,7 @@ class BaseDao{
       throw $e;
     }
   }
-  
+
   public function beginTransaction(){
     $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
     $this->connection->beginTransaction();
@@ -75,7 +75,7 @@ class BaseDao{
 
     $stmt = $this->connection->prepare($query);
     $stmt->execute($entity);
-    $user[$this->primary_key] = $this->connection->lastInsertId();
+    $entity[$this->primary_key] = $this->connection->lastInsertId();
     return $entity;
   }
 
