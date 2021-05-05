@@ -37,7 +37,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="display:none">
 
         <div id="wrapper">
 
@@ -271,12 +271,14 @@
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
-
-            // define routes
-
-            
-            // run app
             app.run();
+
+            if(!window.localStorage.getItem("token")){
+              window.location = "login.html";
+            }else{
+              $("body").show();
+
+            }
           });
         </script>
 

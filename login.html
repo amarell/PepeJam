@@ -28,7 +28,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="display:none">
 
         <div class="container">
             <div class="row">
@@ -64,8 +64,16 @@
         <script src="./assets/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
-          function doLogin(){
 
+          $(function(){
+            if(window.localStorage.getItem("token")){
+              window.location = "index.html";
+            }else{
+              $("body").show();
+            }
+          });
+
+          function doLogin(){
             var login_info = {
               "email" : $("#email").val(),
               "password" : $("#password").val()
@@ -74,7 +82,10 @@
             $("#login-link").prop("disabled", true);
 
             $.post( "http://localhost:8080/api/login", login_info).done(function( data ) {
+              window.localStorage.setItem("token", data.token);
               window.location = "index.html";
+
+
             }).fail(function(error) {
               $("#login-link").prop("disabled", false);
               alert(error.responseJSON.message);
