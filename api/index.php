@@ -19,10 +19,10 @@ Flight::set('flight.log_errors', true);
 
 
 /* Error handling for API*/
-
+/*
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode());
-});
+});*/
 
 /* Register Bussiness Logic Layer services */
 Flight::register('userService', 'UserService');
