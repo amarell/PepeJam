@@ -52,6 +52,9 @@
 
                                     <div class="form-group">
                                     </div>
+                                    <div class="form-group pull-left">
+                                        <a onclick="showForgotForm()" href="#">Forgot password?</a>
+                                    </div>
                                     <div class="form-group pull-right">
                                         <a onclick="showRegisterForm()" href="#">Register here</a>
                                     </div>
@@ -62,8 +65,7 @@
                 </div>
             </div>
 
-
-            <div id="register-form-alert" class="row hidden" style="margin-top: 50px">
+            <div id="form-alert" class="row hidden" style="margin-top: 50px">
               <div class="alert alert-success" role="alert">
                 This is a success alert—check it out!
               </div>
@@ -102,6 +104,61 @@
                     </div>
                 </div>
             </div>
+
+            <div id="forgot-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Forgot password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="forgot-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <button id="forgot-link" onclick="doForgotPassword()" class="btn btn-lg btn-success btn-block">Send recovery link</button>
+
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a onclick="showLoginForm()" href="#">Back to Login</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="change-password-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Reset your password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input  id="change-password-token" class="form-control" placeholder="Token" name="token" type="token" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input  id="change-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <button id="login-link" onclick="doChangePassword();" class="btn btn-lg btn-success btn-block">Change password</button>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- jQuery -->
@@ -128,6 +185,12 @@
           function showLoginForm() {
             $("#login-form-container").removeClass("hidden");
             $("#register-form-container").addClass("hidden");
+            $("#forgot-form-container").addClass("hidden");
+          }
+
+          function showForgotForm() {
+            $("#login-form-container").addClass("hidden");
+            $("#forgot-form-container").removeClass("hidden");
           }
 
           function doRegister() {
@@ -142,8 +205,8 @@
             $.post( "http://localhost:8080/api/register", register_info).done(function( data ) {
               console.log(data);
               $("#register-form-container").addClass("hidden");
-              $("#register-form-alert").removeClass("hidden");
-              $("#register-form-alert .alert").html(data.message);
+              $("#form-alert").removeClass("hidden");
+              $("#form-alert .alert").html(data.message);
 
             }).fail(function(error) {
               $("#register-link").prop("disabled", false);
@@ -167,6 +230,34 @@
               $("#login-link").prop("disabled", false);
               alert( error.responseJSON.message );
             })
+          }
+
+          function doForgotPassword() {
+            var forgot_info = {
+              "email" : $("#forgot-email").val()
+            };
+
+            $("#forgot-link").prop("disabled", true);
+
+            $.post( "http://localhost:8080/api/forgot", forgot_info).done(function( data ) {
+              console.log(data);
+              $("#forgot-form-container").addClass("hidden");
+              $("#form-alert").removeClass("hidden");
+              $("#form-alert .alert").html(data.message);
+            }).fail(function(error) {
+              $("#forgot-link").prop("disabled", false);
+              $("#forgot-form-container").addClass("hidden");
+              $("#form-alert").removeClass("hidden");
+              $("#form-alert .alert").html(error.responseJSON.message);
+            })
+
+            /*
+            function doChangePassword() {
+              var change_password_info = {
+                "token" : $("#change-password-token").val(),
+                "password" : $("#change-password").val()
+              }
+            }*/
           }
         </script>
 
