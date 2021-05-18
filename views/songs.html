@@ -114,6 +114,33 @@
 
   function getSongs(){
 
+    $("#songs-table").DataTable({
+      "processing": true,
+      "serverSide": true,
+      "ajax": {
+        url: "http://localhost:8080/api/songs?order=%2Bsong_id",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: "",
+        data: function ( d ) {
+          d.offset = d.start;
+          d.limit = d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == "asc" ? "-" : "+")+d.columns[d.order[0].column].data);
+          console.log(d);
+        }
+
+      },
+      "columns": [
+            { "data": "song_id" },
+            { "data": "song_name" },
+            { "data": "song_duration" },
+            { "data": "number_of_plays" },
+            { "data": "artist_id" }
+        ]
+    });
+
+    /*
     $.ajax({
          url: "http://localhost:8080/api/songs?order=%2Bsong_id",
          type: "GET",
@@ -134,6 +161,6 @@
            $("#songs-table").DataTable();
 
          }
-      });
+      });*/
   }
 </script>

@@ -42,7 +42,7 @@ Flight::map('query', function($name, $default_value = NULL){
   $request = Flight::request();
   $query_param = @$request->query->getData()[$name];
   $query_param = $query_param ? $query_param : $default_value;
-  return $query_param;
+  return urldecode($query_param);
 });
 
 /* utility function for getting header parameters */
