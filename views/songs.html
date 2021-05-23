@@ -44,6 +44,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form role="form" id="add-song">
+              <input type="hidden" name="song_id" />
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Add song to the database</h4>
@@ -85,8 +86,14 @@
   $("#add-song").validate({
    submitHandler: function(form, event) {
      event.preventDefault();
-     console.log(jsonize_form($(form)));
-     addSong(jsonize_form($(form)));
+     var data = jsonize_form($(form));
+
+     if(data.song_id){
+       updateSong(data);
+     }
+     else{
+       addSong(data);
+     }
    }
   });
 
@@ -117,29 +124,43 @@
     $("#songs-table").DataTable({
       "processing": true,
       "serverSide": true,
+      "bDestroy": true,
+      "pagingType": "simple",
       "ajax": {
         url: "http://localhost:8080/api/songs?order=%2Bsong_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        dataSrc: "",
+        dataSrc: function(resp){
+          console.log(resp);
+          return resp;
+        },
         data: function ( d ) {
           d.offset = d.start;
           d.limit = d.length;
           d.search = d.search.value;
           d.order = encodeURIComponent((d.order[0].dir == "asc" ? "-" : "+")+d.columns[d.order[0].column].data);
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
           console.log(d);
         }
-
+      },
+      "preDrawCallback": function( settings ) {
+        console.log(settings);
       },
       "columns": [
-            { "data": "song_id" },
+            { "data": "song_id",
+              "render": function ( data, type, row, meta ) {
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditSongModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
             { "data": "song_name" },
             { "data": "song_duration" },
             { "data": "number_of_plays" },
             { "data": "artist_id" }
         ]
     });
-
     /*
     $.ajax({
          url: "http://localhost:8080/api/songs?order=%2Bsong_id",
@@ -162,5 +183,48 @@
 
          }
       });*/
+  }
+
+  function updateSong(song) {
+    console.log(song);
+    $.ajax({
+        url: "http://localhost:8080/api/song/"+song.song_id,
+        type: "PUT",
+        data: JSON.stringify(song),
+        contentType: "application/json",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          toastr.success("Song has been updated");
+          getSongs();
+          $("#add-song").trigger("reset");
+          $("#add-song *[name='song_id']").val("");
+          $('#add-song-modal').modal("hide");
+          console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+          console.log(jqXHR);
+        }
+     });
+  }
+
+  function openEditSongModal(id) {
+    $.ajax({
+         url: "http://localhost:8080/api/song/"+id,
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           $("#add-song *[name='song_id']").val(data.song_id);
+           $("#add-song *[name='song_name']").val(data.song_name);
+           $("#add-song *[name='song_duration']").val(data.song_duration);
+           $("#add-song *[name='number_of_plays']").val(data.number_of_plays);
+           $("#add-song *[name='artist_id']").val(data.artist_id);
+           $("#add-song-modal").modal("show");
+           console.log(data);
+         },
+         error: function(jqXHR, textStatus, errorThrown) {
+           console.log(jqXHR);
+         }
+      });
   }
 </script>
