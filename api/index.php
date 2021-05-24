@@ -17,6 +17,12 @@ require_once dirname(__FILE__)."/services/AlbumService.class.php";
 require_once dirname(__FILE__)."/services/PlaylistService.class.php";
 
 
+// TODO: BLL for clients
+require_once dirname(__FILE__).'/clients/CDNClient.class.php';
+Flight::register('cdnClient', 'CDNClient');
+
+
+
 /* include JWT */
 use \Firebase\JWT\JWT;
 
@@ -35,6 +41,7 @@ Flight::register('artistService', 'ArtistService');
 Flight::register('songService', "SongService");
 Flight::register('albumService', 'AlbumService');
 Flight::register('playlistService', 'PlaylistService');
+
 
 
 /* Utility function for reading parameters from the URL*/
@@ -77,6 +84,7 @@ require_once dirname(__FILE__)."/routes/artists.php";
 require_once dirname(__FILE__)."/routes/songs.php";
 require_once dirname(__FILE__)."/routes/albums.php";
 require_once dirname(__FILE__)."/routes/playlists.php";
+require_once dirname(__FILE__)."/routes/cdn.php";
 
 
 Flight::start();

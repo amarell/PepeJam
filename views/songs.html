@@ -101,7 +101,7 @@
 
   function addSong(song) {
     $.ajax({
-         url: "http://localhost:8080/api/songs",
+         url: "http://localhost:8080/api/admin/cdn",
          type: "POST",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          data: song,
