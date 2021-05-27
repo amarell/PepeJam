@@ -26,8 +26,8 @@ $client = new Aws\S3\S3Client([
     'region'  => 'fra1',
     'endpoint' => 'https://fra1.digitaloceanspaces.com',
     'credentials' => [
-        'key'    => "JZPUZSXS3MJ374PAV462",
-        'secret' => "FuIK5+eCwtQRIzvwnLOzbKN585Cige23eOpziUvAnS4",
+        'key'    => "",
+        'secret' => "",
     ],
 ]);
 
