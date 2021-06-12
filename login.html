@@ -217,7 +217,7 @@
           function doRegister() {
             $("#register-link").prop("disabled", true);
 
-            $.post( "http://localhost:8080/api/register", jsonize_form("#register_form")).done(function( data ) {
+            $.post( "http://localhost:8080/api/register", PepeJamUtils.jsonize_form("#register_form")).done(function( data ) {
               console.log(data);
               $("#register-form-container").addClass("hidden");
               $("#form-alert").removeClass("hidden");
@@ -233,7 +233,7 @@
           function doLogin(){
             $("#login-link").prop("disabled", true);
 
-            $.post( "http://localhost:8080/api/login", jsonize_form("#login-form")).done(function( data ) {
+            $.post( "http://localhost:8080/api/login", PepeJamUtils.jsonize_form("#login-form")).done(function( data ) {
               window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {
@@ -246,7 +246,7 @@
           function doForgotPassword() {
             $("#forgot-link").prop("disabled", true);
 
-            $.post( "http://localhost:8080/api/forgot", jsonize_form("#forgot-form")).done(function( data ) {
+            $.post( "http://localhost:8080/api/forgot", PepeJamUtils.jsonize_form("#forgot-form")).done(function( data ) {
               console.log(data);
               $("#forgot-form-container").addClass("hidden");
               $("#form-alert").removeClass("hidden");
@@ -262,7 +262,7 @@
           function doChangePassword() {
             $("#change-link").prop("disabled", true);
 
-            $.post( "http://localhost:8080/api/reset", jsonize_form("#change-password-form")).done(function( data ) {
+            $.post( "http://localhost:8080/api/reset", PepeJamUtils.jsonize_form("#change-password-form")).done(function( data ) {
               window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {

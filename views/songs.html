@@ -86,7 +86,7 @@
   $("#add-song").validate({
    submitHandler: function(form, event) {
      event.preventDefault();
-     var data = jsonize_form($(form));
+     var data = PepeJamUtils.jsonize_form($(form));
 
      if(data.song_id){
        updateSong(data);
@@ -223,11 +223,7 @@
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
-           $("#add-song *[name='song_id']").val(data.song_id);
-           $("#add-song *[name='song_name']").val(data.song_name);
-           $("#add-song *[name='song_duration']").val(data.song_duration);
-           $("#add-song *[name='number_of_plays']").val(data.number_of_plays);
-           $("#add-song *[name='artist_id']").val(data.artist_id);
+           PepeJamUtils.json2form("#add-song", data);
            $("#add-song-modal").modal("show");
            console.log(data);
          },

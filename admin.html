@@ -170,7 +170,7 @@
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
-              var user_info = parse_jwt(window.localStorage["token"]);
+              var user_info = PepeJamUtils.parse_jwt(window.localStorage["token"]);
               if(user_info["r"] != "ADMIN"){
                 window.location = "index.html";
               }else{

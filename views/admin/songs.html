@@ -86,7 +86,7 @@
   $("#add-song").validate({
    submitHandler: function(form, event) {
      event.preventDefault();
-     var data = jsonize_form($(form));
+     var data = PepeJamUtils.jsonize_form($(form));
 
      if(data.song_id){
        updateSong(data);
