@@ -71,7 +71,7 @@
                             </li>
                             <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                             </li>
-                            <li class="admin-stuff"><a href="#"><i class="fas fa-user-shield"></i> Admin panel </a>
+                            <li class="admin-stuff"><a href="#admin-dashboard"><i class="fas fa-user-shield"></i> Admin panel </a>
                             </li>
                             <li class="divider"></li>
                             <li><a onclick="doLogout()" href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -85,9 +85,8 @@
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
                             <li>
-                                <a href="#dashboard" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                                <a href="#admin-dashboard" class="active"><i class="fa fa-dashboard fa-fw"></i> Admin Dashboard</a>
                             </li>
-
                             <li>
                                 <a href="#songs"><i class="fas fa-headphones"></i> Songs</a>
                             </li>
@@ -107,7 +106,7 @@
                                 <a href="#upload"><i class="fas fa-upload"></i> Upload</a>
                             </li>
                             <li class="admin-stuff">
-                                <a href="#admin-panel"><i class="fas fa-user-shield"></i> Admin panel</a>
+                                <a href="index.html"><i class="fas fa-arrow-left"></i> Back</a>
                             </li>
                         </ul>
                     </div>
@@ -115,15 +114,13 @@
             </nav>
 
             <main id="jqueryspapp" role="main">
-              <section id="dashboard" data-load="dashboard.html" ></section>
-              <section id="tables" data-load="tables.html" ></section>
-              <section id="songs" data-load="songs.html" ></section>
-              <section id="upload" data-load="upload.html" ></section>
-              <section id="artists" data-load="artists.html" ></section>
-              <section id="users" data-load="users.html" ></section>
-              <section id="playlists" data-load="playlists.html" ></section>
+              <section id="admin-dashboard" data-load="admin/admin-dashboard.html" ></section>
+              <section id="upload" data-load="admin/upload.html" ></section>
+              <section id="users" data-load="admin/users.html" ></section>
+              <section id="songs" data-load="admin/songs.html" ></section>
+              <section id="artists" data-load="admin/artists.html" ></section>
               <section id="settings" data-load="settings.html" ></section>
-              <section id="admin" data-load="admin.html" ></section>
+              <section id="playlists" data-load="playlists.html" ></section>
             </main>
 
         </div>
@@ -166,19 +163,19 @@
         <script src="./assets/js/startmin.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
-            var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
+            var app = $.jQuerySPApp({defaultView  : "admin-dashboard"}); // initialize
             app.run();
+            $("body").show();
 
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
               var user_info = parse_jwt(window.localStorage["token"]);
-
               if(user_info["r"] != "ADMIN"){
-                $(".admin-stuff").remove();
+                window.location = "index.html";
+              }else{
+                $("body").show();
               }
-
-              $("body").show();
             }
           });
 
