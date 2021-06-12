@@ -20,18 +20,23 @@ class SongDao extends BaseDao{
                          ["artist_id" => $artist_id]);
   }
 
-  public function get_songs($search, $offset, $limit, $order){
+  public function get_songs($search, $offset, $limit, $order, $total = FALSE){
     if(is_null($order)){
       $order = "-song_id";
     }
 
     list($order_column, $order_direction) = self::parse_order($order);
-
-    return $this->query("SELECT * FROM songs
-                         WHERE LOWER(song_name) LIKE LOWER('%".$search."%')
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",
-                         []);
+    if($total){
+      return $this->query_unique("SELECT COUNT(*) AS total FROM songs
+                           WHERE LOWER(song_name) LIKE LOWER('%".$search."%')",
+                           []);
+    } else {
+      return $this->query("SELECT * FROM songs
+                           WHERE LOWER(song_name) LIKE LOWER('%".$search."%')
+                           ORDER BY ${order_column} ${order_direction}
+                           LIMIT ${limit} OFFSET ${offset}",
+                           []);
+    }
   }
 }
 ?>

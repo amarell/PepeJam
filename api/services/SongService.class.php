@@ -9,12 +9,12 @@ class SongService extends BaseService{
     $this->dao = new SongDao();
   }
 
-  public function get_songs($search, $offset, $limit, $order){
+  public function get_songs($search, $offset, $limit, $order, $total = FALSE){
     if($search){
-      return $this->dao->get_songs($search, $offset, $limit, $order);
+      return $this->dao->get_songs($search, $offset, $limit, $order, $total);
     }
     else{
-      return $this->dao->get_all($offset, $limit, $order);
+      return $this->dao->get_songs($search, $offset, $limit, $order, $total);
     }
   }
 

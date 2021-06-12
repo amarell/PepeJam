@@ -57,7 +57,8 @@ Flight::route('GET /songs', function(){
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
   $order = Flight::query("order");
-
+  $total = Flight::songService()->get_songs($search, $offset, $limit, $order, TRUE);
+  header("total-records: ".$total['total']);
   Flight::json(Flight::songService()->get_songs($search, $offset, $limit, $order));
 });
 

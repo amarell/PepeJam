@@ -125,7 +125,7 @@
       "processing": true,
       "serverSide": true,
       "bDestroy": true,
-      "pagingType": "simple",
+      //"pagingType": "simple",
       "ajax": {
         url: "http://localhost:8080/api/songs?order=%2Bsong_id",
         type: "GET",
@@ -147,6 +147,12 @@
         }
       },
       "preDrawCallback": function( settings ) {
+        if(settings.jqXHR){
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader("total-records");
+        }
+
+        /*
         if(settings.aoData.length < settings._iDisplayLength){
           //disable pagination
           settings._iRecordsTotal=0;
@@ -154,16 +160,15 @@
         } else{
           settings._iRecordsTotal=1000000;
           settings._iRecordsDisplay=1000000;
-        }
-        console.log(settings);
+        }*/
       },
-      "language": {
+      /*"language": {
             "lengthMenu": "Display _MENU_ records per page",
             "zeroRecords": "Nothing found - sorry",
             "info": "Showing page _PAGE_",
             "infoEmpty": "No records available",
             "infoFiltered": ""
-      },
+      },*/
       "columns": [
             { "data": "song_id",
               "render": function ( data, type, row, meta ) {
