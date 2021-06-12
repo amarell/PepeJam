@@ -1,4 +1,7 @@
 <?php
+
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -8,10 +11,10 @@ require_once __DIR__.'/api/clients/CDNClient.class.php';
 
 $client = new CDNClient();
 /*
-$url = $client->upload("teslabinaryyoink.mp3",base64_encode(file_get_contents('C:\Users\Intel\Downloads\song.mp3')));
+$url = $client->upload("teslabinaryyoink.txt",base64_encode(file_get_contents('C:\Users\Intel\Downloads\hello.txt')));
 
 print_r($url);die;
-
+/*
 echo '<audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
         <source src="https://fra1.digitaloceanspaces.com/cdn.pepejam/teslabinaryyoink.mp3" />
       </audio>'; die;

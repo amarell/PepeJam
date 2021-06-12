@@ -101,7 +101,7 @@
 
   function addSong(song) {
     $.ajax({
-         url: "http://localhost:8080/api/admin/cdn",
+         url: "http://localhost:8080/api/songs",
          type: "POST",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          data: song,
@@ -147,7 +147,22 @@
         }
       },
       "preDrawCallback": function( settings ) {
+        if(settings.aoData.length < settings._iDisplayLength){
+          //disable pagination
+          settings._iRecordsTotal=0;
+          settings._iRecordsDisplay=0;
+        } else{
+          settings._iRecordsTotal=1000000;
+          settings._iRecordsDisplay=1000000;
+        }
         console.log(settings);
+      },
+      "language": {
+            "lengthMenu": "Display _MENU_ records per page",
+            "zeroRecords": "Nothing found - sorry",
+            "info": "Showing page _PAGE_",
+            "infoEmpty": "No records available",
+            "infoFiltered": ""
       },
       "columns": [
             { "data": "song_id",

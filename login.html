@@ -188,7 +188,6 @@
             if(urlParams.has("token")){
               $("#change-password-token").val(urlParams.get("token"));
               showChangePasswordForm();
-
             }
           });
 
@@ -238,6 +237,7 @@
               window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {
+              // For this to work error handling has to be enabled in index.php
               $("#login-link").prop("disabled", false);
               toastr.error(error.responseJSON.message);
             })
