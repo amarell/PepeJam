@@ -12,7 +12,7 @@ class PepeJamUtils {
   }
 
   static json2form(selector, data) {
-    for (attr in data){
+    for (const attr in data){
        $(selector+" *[name='"+attr+"']").val(data[attr]);
     }
   }

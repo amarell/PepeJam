@@ -88,11 +88,12 @@
      event.preventDefault();
      var data = PepeJamUtils.jsonize_form($(form));
 
-     if(data.song_id){
-       updateSong(data);
+     if(data.song_id === ""){
+       delete data.song_id;
+       addSong(data);
      }
      else{
-       addSong(data);
+       updateSong(data);
      }
    }
   });
@@ -100,22 +101,12 @@
   getSongs();
 
   function addSong(song) {
-    $.ajax({
-         url: "http://localhost:8080/api/songs",
-         type: "POST",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         data: song,
-         success: function(data) {
-           toastr.success("Song has been added to the database!");
-           getSongs();
-           $("#add-song").trigger("reset");
-           $("#add-song-modal").modal("hide");
-           console.log(data);
-         },
-         error: function(jqXHR, textStatus, errorThrown) {
-           console.log(jqXHR);
-         }
-      });
+    RestClient.post("http://localhost:8080/api/songs", song, function(data){
+      toastr.success("Song has been added to the database!");
+      getSongs();
+      $("#add-song").trigger("reset");
+      $("#add-song-modal").modal("hide");
+    })
   }
 
 
@@ -196,44 +187,21 @@
 
   function updateSong(song) {
     console.log(song);
-    $.ajax({
-        url: "http://localhost:8080/api/song/"+song.song_id,
-        type: "PUT",
-        data: JSON.stringify(song),
-        contentType: "application/json",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        success: function(data) {
-          toastr.success("Song has been updated");
-          getSongs();
-          $("#add-song").trigger("reset");
-          $("#add-song *[name='song_id']").val("");
-          $('#add-song-modal').modal("hide");
-          console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          toastr.error(jqXHR.responseJSON.message);
-          console.log(jqXHR);
-        }
-     });
+    RestClient.put("http://localhost:8080/api/song/"+song.song_id, song, function(data){
+      toastr.success("Song has been updated");
+      getSongs();
+      $("#add-song").trigger("reset");
+      $("#add-song *[name='song_id']").val("");
+      $('#add-song-modal').modal("hide");
+      console.log(data);
+    });
   }
 
   function openEditSongModal(id) {
-    $.ajax({
-         url: "http://localhost:8080/api/song/"+id,
-         type: "GET",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-           $("#add-song *[name='song_id']").val(data.song_id);
-           $("#add-song *[name='song_name']").val(data.song_name);
-           $("#add-song *[name='song_duration']").val(data.song_duration);
-           $("#add-song *[name='number_of_plays']").val(data.number_of_plays);
-           $("#add-song *[name='artist_id']").val(data.artist_id);
-           $("#add-song-modal").modal("show");
-           console.log(data);
-         },
-         error: function(jqXHR, textStatus, errorThrown) {
-           console.log(jqXHR);
-         }
-      });
+    RestClient.get("http://localhost:8080/api/song/"+id, function(data){
+      PepeJamUtils.json2form("#add-song", data);
+      $("#add-song-modal").modal("show");
+      console.log(data);
+    });
   }
 </script>
