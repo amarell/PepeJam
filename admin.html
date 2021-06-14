@@ -140,6 +140,8 @@
 
         <!-- Utility functions JavaScript -->
         <script src="./assets/js/utils.js"></script>
+        <script src="./assets/js/restClient.js"></script>
+        <script src="./assets/js/controllers/songs.js"></script>
 
         <!-- Toastr JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -164,6 +166,7 @@
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "admin-dashboard"}); // initialize
+            app.route({view : "songs", load : "admin/songs.html", onReady: function() {Song.init()}});
             app.run();
             $("body").show();
 
