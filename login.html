@@ -9,14 +9,14 @@
 
         <title>PepeJam Login</title>
 
-        <!-- Bootstrap Core CSS -->
-        <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
-
         <!-- MetisMenu CSS -->
         <link href="./assets/css/metisMenu.min.css" rel="stylesheet">
 
         <!-- Custom CSS -->
         <link href="./assets/css/startmin.css" rel="stylesheet">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Toastr CSS -->
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css">
@@ -24,12 +24,6 @@
         <!-- Custom Fonts -->
         <link href="./assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
     </head>
     <body style="display:none">
 
@@ -51,15 +45,15 @@
                                     </div>
 
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
+                                    <button id="login-link" onclick="Login.login();" class="btn btn-lg btn-success btn-block">Login</button>
 
                                     <div class="form-group">
                                     </div>
                                     <div class="form-group pull-left">
-                                        <a onclick="showForgotForm()" href="#">Forgot password?</a>
+                                        <a onclick="Login.show_forgot_form()" href="#">Forgot password?</a>
                                     </div>
                                     <div class="form-group pull-right">
-                                        <a onclick="showRegisterForm()" href="#">Register here</a>
+                                        <a onclick="Login.show_register_form()" href="#">Register here</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -94,12 +88,12 @@
                                     </div>
 
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="register-link" onclick="doRegister()" class="btn btn-lg btn-success btn-block">Register</button>
+                                    <button id="register-link" onclick="Login.register()" class="btn btn-lg btn-success btn-block">Register</button>
 
                                     <div class="form-group">
                                     </div>
                                     <div class="form-group pull-right">
-                                        <a onclick="showLoginForm()" href="#">Back</a>
+                                        <a onclick="Login.show_login_form()" href="#">Back</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -122,12 +116,12 @@
                                     </div>
 
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="forgot-link" onclick="doForgotPassword()" class="btn btn-lg btn-success btn-block">Send recovery link</button>
+                                    <button id="forgot-link" onclick="Login.forgot_password()" class="btn btn-lg btn-success btn-block">Send recovery link</button>
 
                                     <div class="form-group">
                                     </div>
                                     <div class="form-group pull-right">
-                                        <a onclick="showLoginForm()" href="#">Back to Login</a>
+                                        <a onclick="Login.show_login_form()" href="#">Back to Login</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -153,7 +147,7 @@
                                     </div>
 
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="change-link" onclick="doChangePassword();" class="btn btn-lg btn-success btn-block">Change password</button>
+                                    <button id="change-link" onclick="Login.change_password();" class="btn btn-lg btn-success btn-block">Change password</button>
 
 
                                 </fieldset>
@@ -172,104 +166,14 @@
 
         <!-- Utility functions JavaScript -->
         <script src="./assets/js/utils.js"></script>
+        <script src="./assets/js/restClient.js"></script>
+        <script src="./assets/js/controllers/login.js"></script>
 
         <!-- Toastr JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <script type="text/javascript">
-
-          $(function(){
-            if(window.localStorage.getItem("token")){
-              window.location = "index.html";
-            }else{
-              $("body").show();
-            }
-            var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.has("token")){
-              $("#change-password-token").val(urlParams.get("token"));
-              showChangePasswordForm();
-            }
-          });
-
-          function showRegisterForm() {
-            $("#login-form-container").addClass("hidden");
-            $("#register-form-container").removeClass("hidden");
-          }
-
-          function showLoginForm() {
-            $("#login-form-container").removeClass("hidden");
-            $("#register-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-          }
-
-          function showForgotForm() {
-            $("#login-form-container").addClass("hidden");
-            $("#forgot-form-container").removeClass("hidden");
-          }
-
-          function showChangePasswordForm() {
-            $("#login-form-container").addClass("hidden");
-            $("#register-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-            $("#change-password-form-container").removeClass("hidden");
-          }
-
-          function doRegister() {
-            $("#register-link").prop("disabled", true);
-
-            $.post( "http://localhost:8080/api/register", PepeJamUtils.jsonize_form("#register_form")).done(function( data ) {
-              console.log(data);
-              $("#register-form-container").addClass("hidden");
-              $("#form-alert").removeClass("hidden");
-              $("#form-alert .alert").html(data.message);
-
-            }).fail(function(error) {
-              $("#register-link").prop("disabled", false);
-              console.log(error);
-              toastr.error(error.responseJSON.message);
-            })
-          }
-
-          function doLogin(){
-            $("#login-link").prop("disabled", true);
-
-            $.post( "http://localhost:8080/api/login", PepeJamUtils.jsonize_form("#login-form")).done(function( data ) {
-              window.localStorage.setItem("token", data.token);
-              window.location = "index.html";
-            }).fail(function(error) {
-              // For this to work error handling has to be enabled in index.php
-              $("#login-link").prop("disabled", false);
-              toastr.error(error.responseJSON.message);
-            })
-          }
-
-          function doForgotPassword() {
-            $("#forgot-link").prop("disabled", true);
-
-            $.post( "http://localhost:8080/api/forgot", PepeJamUtils.jsonize_form("#forgot-form")).done(function( data ) {
-              console.log(data);
-              $("#forgot-form-container").addClass("hidden");
-              $("#form-alert").removeClass("hidden");
-              $("#form-alert .alert").html(data.message);
-            }).fail(function(error) {
-              $("#forgot-link").prop("disabled", false);
-              $("#forgot-form-container").addClass("hidden");
-              $("#form-alert").removeClass("hidden");
-              $("#form-alert .alert").html(error.responseJSON.message);
-            })
-          }
-
-          function doChangePassword() {
-            $("#change-link").prop("disabled", true);
-
-            $.post( "http://localhost:8080/api/reset", PepeJamUtils.jsonize_form("#change-password-form")).done(function( data ) {
-              window.localStorage.setItem("token", data.token);
-              window.location = "index.html";
-            }).fail(function(error) {
-              $("#change-link").prop("disabled", false);
-              toastr.error(error.responseJSON.message);
-            })
-          }
+          Login.init();
         </script>
 
     </body>

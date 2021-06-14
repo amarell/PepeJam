@@ -29,7 +29,7 @@ class SMTPClient {
     $message = (new Swift_Message('Reset password for your PepeJam account'))
       ->setFrom(['pepejam@gmail.com' => 'PepeJam'])
       ->setTo([$user["email"]])
-      ->setBody("This is the recovery token: ". $user["token"])
+      ->setBody("This is the recovery token: http://localhost/webapp/login.html?token=". $user["token"])
       ;
 
       $result = $this->mailer->send($message);
