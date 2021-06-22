@@ -45,7 +45,8 @@ Flight::route('GET /artists', function(){
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
   $order = Flight::query("order");
-
+  $total = Flight::artistService()->get_artists($search, $offset, $limit, $order, TRUE);
+  header("total-records: ".$total['total']);
   Flight::json(Flight::artistService()->get_artists($search, $offset, $limit, $order));
 
 });

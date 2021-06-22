@@ -11,18 +11,25 @@ class ArtistDao extends BaseDao{
     return $this->query("SELECT * FROM artists WHERE artist_name = :artist_name ORDER BY number_of_followers DESC", ["artist_name"=>$name]);
   }
 
-  public function get_artists($search, $offset, $limit, $order){
+  public function get_artists($search, $offset, $limit, $order, $total = FALSE){
     if(is_null($order)){
       $order = "-artist_id";
     }
 
     list($order_column, $order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT * FROM artists
-                         WHERE LOWER(artist_name) LIKE LOWER('%".$search."%')
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",
-                         []);
+    if($total){
+      return $this->query_unique("SELECT COUNT(*) AS total FROM artists
+                           WHERE LOWER(artist_name) LIKE LOWER('%".$search."%')",
+                           []);
+    } else {
+      return $this->query("SELECT * FROM artists
+                           WHERE LOWER(artist_name) LIKE LOWER('%".$search."%')
+                           ORDER BY ${order_column} ${order_direction}
+                           LIMIT ${limit} OFFSET ${offset}",
+                           []);
+    }
+
   }
 
 
