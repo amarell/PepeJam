@@ -1,36 +1,37 @@
-class Song {
+class User {
   static init(){
-    $("#add-song").validate({
+    $("#add-user").validate({
      submitHandler: function(form, event) {
        event.preventDefault();
        var data = PepeJamUtils.jsonize_form($(form));
 
-       if(data.song_id === ""){
-         delete data.song_id;
-         Song.add(data);
+       if(data.user_id === ""){
+         delete data.user_id;
+         User.add(data);
        }
        else{
-         Song.update(data);
+         User.update(data);
        }
      }
     });
-    Song.get_all();
+    User.get_all();
   }
 
   static get_all(){
-    $("#songs-table").DataTable({
+    $("#users-table").DataTable({
       "processing": true,
       "serverSide": true,
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/songs?order=%2Bsong_id",
+        url: "http://localhost:8080/api/admin/users?order=%2Buser_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
           return resp;
         },
         data: function ( d ) {
+
           d.offset = d.start;
           d.limit = d.length;
           d.search = d.search.value;
@@ -56,42 +57,45 @@ class Song {
       },
       "responsive": true,
       "columns": [
-            { "data": "song_id",
+            { "data": "user_id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Song.pre_edit('+data+')"><i class="fa fa-edit"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="User.pre_edit('+data+')"><i class="fa fa-edit"></i></a>';
               }
             },
-            { "data": "song_name" },
-            { "data": "song_duration" },
-            { "data": "number_of_plays" },
-            { "data": "artist_id" }
+            { "data": "username" },
+            { "data": "password" },
+            { "data": "email" },
+            { "data": "status" },
+            { "data": "token" },
+            { "data": "created_at" },
+            { "data": "role" }
         ]
       });
   }
 
-  static add(song){
-    RestClient.post("http://localhost:8080/api/songs", song, function(data){
-      toastr.success("Song has been added to the database!");
-      Song.get_all();
-      $("#add-song").trigger("reset");
-      $("#add-song-modal").modal("hide");
+  static add(user){
+    RestClient.post("http://localhost:8080/api/admin/users", user, function(data){
+      toastr.success("User has been added to the database!");
+      User.get_all();
+      $("#add-user").trigger("reset");
+      $("#add-user-modal").modal("hide");
     });
   }
 
-  static update(song){
-    RestClient.put("http://localhost:8080/api/song/"+song.song_id, song, function(data){
-      toastr.success("Song has been updated");
-      Song.get_all();
-      $("#add-song").trigger("reset");
-      $("#add-song *[name='song_id']").val("");
-      $('#add-song-modal').modal("hide");
+  static update(user){
+    RestClient.put("http://localhost:8080/api/admin/user/"+user.user_id, user, function(data){
+      toastr.success("User has been updated");
+      User.get_all();
+      $("#add-user").trigger("reset");
+      $("#add-user *[name='user_id']").val("");
+      $('#add-user-modal').modal("hide");
     });
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/song/"+id, function(data){
-      PepeJamUtils.json2form("#add-song", data);
-      $("#add-song-modal").modal("show");
+    RestClient.get("http://localhost:8080/api/admin/user/"+id, function(data){
+      PepeJamUtils.json2form("#add-user", data);
+      $("#add-user-modal").modal("show");
     });
   }
 }
