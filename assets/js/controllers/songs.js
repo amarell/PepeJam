@@ -86,14 +86,15 @@ class Song {
       } else {
         $("#cover-image").attr("src", data.cover_url);
       }
+      
+      RestClient.get("http://localhost:8080/api/artist/"+data.artist_id, function(result){
+        var artist = result.artist_name;
+        console.log(artist);
+        $("#play-song-modal-song-title").text(data.song_name + " - " + artist);
+      });
 
-      $("#play-song-modal-song-title").text(data.song_name);
       $("#play-song-modal").modal("show");
     });
-  /*  console.log(song);
-    $("#play-song-modal-song-title").text(song.name);
-    $("#song-url-source").attr("src", "https://fra1.digitaloceanspaces.com/cdn.pepejam/Metallica%20-%20The%20Unforgiven%20%28Official%20Music%20Video%29.mp3");
-    $('#play-song-modal').modal();*/
   }
 
   static add(song){
