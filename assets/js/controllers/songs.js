@@ -80,7 +80,13 @@ class Song {
       var source = document.getElementById("song-url-source");
       source.src = data.song_url;
       audio.load();
-      $("#cover-image").attr("src", data.cover_url);
+
+      if(data.cover_url == null){
+          $("#cover-image").attr("src", "https://image.flaticon.com/icons/png/512/4313/4313261.png");
+      } else {
+        $("#cover-image").attr("src", data.cover_url);
+      }
+
       $("#play-song-modal-song-title").text(data.song_name);
       $("#play-song-modal").modal("show");
     });
