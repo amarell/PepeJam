@@ -58,7 +58,7 @@ class Artist {
       "columns": [
             { "data": "artist_id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Song.pre_edit('+data+')"><i class="fa fa-edit"></i></a>';
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Artist.pre_edit('+data+')"><i class="fa fa-edit"></i></a>';
               }
             },
             { "data": "artist_name" },
@@ -77,7 +77,7 @@ class Artist {
   }
 
   static update(artist){
-    RestClient.put("http://localhost:8080/api/admin/artists/"+artist.artist_id, artist, function(data){
+    RestClient.put("http://localhost:8080/api/admin/artist/"+artist.artist_id, artist, function(data){
       toastr.success("Artist has been updated");
       Artist.get_all();
       $("#add-artist").trigger("reset");
