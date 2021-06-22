@@ -80,6 +80,7 @@ class Song {
       var source = document.getElementById("song-url-source");
       source.src = data.song_url;
       audio.load();
+      $("#cover-image").attr("src", data.cover_url);
       $("#play-song-modal-song-title").text(data.song_name);
       $("#play-song-modal").modal("show");
     });
