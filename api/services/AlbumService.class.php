@@ -10,13 +10,15 @@ class AlbumService extends BaseService{
     $this->dao = new AlbumDao();
   }
 
-  public function get_albums($search, $offset, $limit, $order){
+  public function get_albums($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_albums($search, $offset, $limit, $order, $total);
+    /*
     if($search){
       return $this->dao->get_albums($search, $offset, $limit, $order);
     }
     else{
       return $this->dao->get_all($offset, $limit, $order);
-    }
+    }*/
   }
 
   public function get_albums_by_artist($artist_id, $offset, $limit, $order){

@@ -94,6 +94,9 @@
                                 <a href="#artists"><i class="fas fa-user-astronaut"></i> Artists</a>
                             </li>
                             <li>
+                                <a href="#albums"><i class="fas fa-user-astronaut"></i> Albums</a>
+                            </li>
+                            <li>
                                 <a href="#users"><i class="fas fa-users"></i> Users</a>
                             </li>
                             <li>
@@ -116,6 +119,7 @@
               <section id="users" data-load="admin/users.html" ></section>
               <section id="songs" data-load="admin/songs.html" ></section>
               <section id="artists" data-load="admin/artists.html" ></section>
+              <section id="albums" data-load="admin/albums.html" ></section>
               <section id="settings" data-load="settings.html" ></section>
               <section id="playlists" data-load="playlists.html" ></section>
             </main>
@@ -141,6 +145,7 @@
         <script src="./assets/js/controllers/songs.js"></script>
         <script src="./assets/js/controllers/users.js"></script>
         <script src="./assets/js/controllers/artists.js"></script>
+        <script src="./assets/js/controllers/albums.js"></script>
 
         <!-- Toastr JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -168,6 +173,7 @@
             app.route({view : "songs", load : "admin/songs.html", onReady: function() {Song.init()}});
             app.route({view : "users", load : "admin/users.html", onReady: function() {User.init()}});
             app.route({view : "artists", load : "admin/artists.html", onReady: function() {Artist.init()}});
+            app.route({view : "albums", load : "admin/albums.html", onReady: function() {Album.init()}});
             app.run();
             $("body").show();
 

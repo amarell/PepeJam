@@ -11,19 +11,25 @@ class AlbumDao extends BaseDao{
     return $this->query("SELECT * FROM albums WHERE album_name = :album_name", ["album_name" => $name]);
   }
 
-  public function get_albums($search, $offset, $limit, $order){
+  public function get_albums($search, $offset, $limit, $order, $total = FALSE){
     if(is_null($order)){
       $order = "-album_id";
     }
 
     list($order_column, $order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT * FROM albums
-                         WHERE LOWER(album_name) LIKE LOWER('%".$search."%')
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",
-                         []);
+    if($total){
+      return $this->query_unique("SELECT COUNT(*) AS total FROM albums
+                           WHERE LOWER(album_name) LIKE LOWER('%".$search."%')",
+                           []);
+    } else {
+      return $this->query("SELECT * FROM albums
+                           WHERE LOWER(album_name) LIKE LOWER('%".$search."%')
+                           ORDER BY ${order_column} ${order_direction}
+                           LIMIT ${limit} OFFSET ${offset}",
+                           []);
 
+    }
   }
 
   public function get_album_by_artist($artist_id, $offset, $limit, $order){

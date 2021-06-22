@@ -66,7 +66,8 @@ Flight::route('GET /user/albums', function(){
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
   $order = Flight::query("order");
-
+  $total = Flight::albumService()->get_albums($search, $offset, $limit, $order, TRUE);
+  header("total-records: ".$total['total']);
   Flight::json(Flight::albumService()->get_albums($search, $offset, $limit, $order));
 });
 
