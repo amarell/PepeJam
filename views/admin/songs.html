@@ -78,3 +78,28 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<div class="modal fade" id="play-song-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form role="form" id="play-song">
+              <input type="hidden" name="song_id" />
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="play-song-modal-song-title" class="modal-title">Play song</h4>
+              </div>
+              <div class="modal-body">
+                <audio controls="controls" id="audioPlayer">
+                  <source id="song-url-source" src="" type="audio/mpeg">
+                </audio>
+              </div>
+
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
