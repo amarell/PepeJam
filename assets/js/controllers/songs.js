@@ -28,6 +28,7 @@ class Song {
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
+          console.log(resp);
           return resp;
         },
         data: function ( d ) {
@@ -86,7 +87,7 @@ class Song {
       } else {
         $("#cover-image").attr("src", data.cover_url);
       }
-      
+
       RestClient.get("http://localhost:8080/api/artist/"+data.artist_id, function(result){
         var artist = result.artist_name;
         console.log(artist);

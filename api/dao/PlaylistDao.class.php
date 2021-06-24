@@ -35,20 +35,24 @@ class PlaylistDao extends BaseDao{
   }
 
 
-  public function get_playlists($search, $offset, $limit, $order){
+  public function get_playlists($search, $offset, $limit, $order, $total = FALSE){
     if(is_null($order)){
       $order = "-playlist_id";
     }
 
     list($order_column, $order_direction) = self::parse_order($order);
-
-    return $this->query("SELECT * FROM playlists
-                         WHERE LOWER(name) LIKE LOWER('%".$search."%')
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",
-                         []);
+    if($total){
+      return $this->query_unique("SELECT COUNT(*) AS total FROM playlists
+                           WHERE LOWER(name) LIKE LOWER('%".$search."%')",
+                           []);
+    } else {
+      return $this->query("SELECT * FROM playlists
+                           WHERE LOWER(name) LIKE LOWER('%".$search."%')
+                           ORDER BY ${order_column} ${order_direction}
+                           LIMIT ${limit} OFFSET ${offset}",
+                           []);
+    }
   }
-
 
   /*
   * get_by_id, add, update and get_all functionality is covered by BaseDao

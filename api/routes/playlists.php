@@ -127,7 +127,8 @@ Flight::route('GET /admin/playlists', function(){
   $limit = Flight::query("limit", 25);
   $search = Flight::query("search");
   $order = Flight::query("order");
-
+  $total = Flight::playlistService()->get_playlists($search, $offset, $limit, $order, TRUE);
+  header("total-records: ".$total['total']);
   Flight::json(Flight::playlistService()->get_playlists($search, $offset, $limit, $order));
 });
 

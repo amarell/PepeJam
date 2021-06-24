@@ -11,13 +11,14 @@ class PlaylistService extends BaseService{
     $this->dao = new PlaylistDao();
   }
 
-  public function get_playlists($search, $offset, $limit, $order){
-    if($search){
+  public function get_playlists($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_playlists($search, $offset, $limit, $order, $total);
+    /*if($search){
       return $this->dao->get_playlists($search, $offset, $limit, $order);
     }
     else{
       return $this->dao->get_all($offset, $limit, $order);
-    }
+    }*/
   }
 
   public function get_playlists_by_user_id($user_id, $offset, $limit, $order){

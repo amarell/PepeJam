@@ -72,6 +72,7 @@ class Login {
       $("#form-alert .alert").html(data.message);
     }, function(jqXHR, textStatus, errorThrown){
       $("#forgot-link").prop("disabled", false);
+      // possible mistake, maybe the following line should be deleted
       $("#forgot-form-container").addClass("hidden");
       toastr.error(error.responseJSON.message);
     });
