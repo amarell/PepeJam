@@ -21,8 +21,8 @@ class PlaylistService extends BaseService{
     }*/
   }
 
-  public function get_playlists_by_user_id($user_id, $offset, $limit, $order){
-    return $this->dao->get_playlists_by_user_id($user_id, $offset, $limit, $order);
+  public function get_playlists_by_user_id($user_id, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_playlists_by_user_id($user_id, $offset, $limit, $order, $total);
   }
 
   public function get_playlists_by_username($username, $offset, $limit, $order){

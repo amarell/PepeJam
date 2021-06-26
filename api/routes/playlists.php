@@ -132,6 +132,25 @@ Flight::route('GET /admin/playlists', function(){
   Flight::json(Flight::playlistService()->get_playlists($search, $offset, $limit, $order));
 });
 
+/**
+ * @OA\Get(path="/user/playlists", tags={"users"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
+ *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(type="string", in="query", name="search", description="Search for a playlist by its name. Case insensitive search."),
+ *     @OA\Parameter(type="string", in="query", name="order", default="-playlist_id", description="Sorting for return elements. -column_name ascending order by column_name or +column_name descending order by column_name"),
+ *     @OA\Response(response="200", description="List playlists from database by a logged in user")
+ * )
+ */
+Flight::route('GET /user/playlists', function(){
+  $offset = Flight::query("offset", 0);
+  $limit = Flight::query("limit", 25);
+  $order = Flight::query("order");
+  $user_id = Flight::get("user")["id"];
+  $total = Flight::playlistService()->get_playlists_by_user_id($user_id, $offset, $limit, $order, TRUE);
+  header("total-records: ".$total['total']);
+  Flight::json(Flight::playlistService()->get_playlists_by_user_id($user_id, $offset, $limit, $order));
+});
+
 
 
 /**

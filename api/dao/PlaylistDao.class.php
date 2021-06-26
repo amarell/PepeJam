@@ -20,18 +20,24 @@ class PlaylistDao extends BaseDao{
                          ["username" => $username]);
   }
 
-  public function get_playlists_by_user_id($user_id, $offset, $limit, $order){
+  public function get_playlists_by_user_id($user_id, $offset, $limit, $order, $total = FALSE){
     if(is_null($order)){
       $order = "-playlist_id";
     }
 
     list($order_column, $order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT * FROM playlists
-                         WHERE user_id = :user_id
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",
-                         ["user_id" => $user_id]);
+    if($total){
+      return $this->query_unique("SELECT COUNT(*) AS total FROM playlists
+                                  WHERE user_id = :user_id",
+                                  ["user_id" => $user_id]);
+    } else {
+      return $this->query("SELECT * FROM playlists
+                           WHERE user_id = :user_id
+                           ORDER BY ${order_column} ${order_direction}
+                           LIMIT ${limit} OFFSET ${offset}",
+                           ["user_id" => $user_id]);
+    }
   }
 
 

@@ -16,6 +16,8 @@
         <link href="./assets/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
         <link href="./assets/css/dataTables/dataTables.responsive.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="./assets/css/custom.css">
+
         <!-- MetisMenu CSS -->
         <link href="./assets/css/metisMenu.min.css" rel="stylesheet">
 
@@ -91,7 +93,7 @@
                                 <a href="#liked_songs"><i class="fas fa-headphones"></i> Liked Songs</a>
                             </li>
                             <li>
-                                <a href="#playlists"><i class="fas fa-images"></i> Playlists</a>
+                                <a href="#playlists"><i class="fas fa-images"></i> My Playlists</a>
                             </li>
                             <li>
                                 <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
@@ -136,6 +138,7 @@
         <script src="./assets/js/utils.js"></script>
         <script src="./assets/js/restClient.js"></script>
         <script src="./assets/js/controllers/songs.js"></script>
+        <script src="./assets/js/controllers/userPlaylists.js"></script>
 
         <!-- Toastr JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -160,13 +163,15 @@
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
+            app.route({view : "playlists", load : "playlists.html", onReady: function() {UserPlaylist.init()}});
+            app.route({view : "liked_songs", load : "liked_songs.html", onReady: function() {Song.init()}});
             app.run();
 
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
               var user_info = PepeJamUtils.parse_jwt(window.localStorage["token"]);
-
+              console.log(user_info);
               if(user_info["r"] != "ADMIN"){
                 $(".admin-stuff").remove();
               }
