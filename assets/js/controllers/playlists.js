@@ -24,7 +24,7 @@ class Playlist {
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/admin/playlists?order=%2Bplaylist_id",
+        url: "/api/admin/playlists?order=%2Bplaylist_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
@@ -69,7 +69,7 @@ class Playlist {
   }
 
   static add(playlist){
-    RestClient.post("http://localhost:8080/api/admin/playlists", playlist, function(data){
+    RestClient.post("/api/admin/playlists", playlist, function(data){
       toastr.success("Playlist has been added to the database!");
       Playlist.get_all();
       $("#add-playlist").trigger("reset");
@@ -78,7 +78,7 @@ class Playlist {
   }
 
   static update(playlist){
-    RestClient.put("http://localhost:8080/api/admin/playlist/"+playlist.playlist_id, playlist, function(data){
+    RestClient.put("/api/admin/playlist/"+playlist.playlist_id, playlist, function(data){
       toastr.success("Playlist has been updated");
       Playlist.get_all();
       $("#add-playlist").trigger("reset");
@@ -88,7 +88,7 @@ class Playlist {
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/admin/playlist/"+id, function(data){
+    RestClient.get("/api/admin/playlist/"+id, function(data){
       PepeJamUtils.json2form("#add-playlist", data);
       $("#add-playlist-modal").modal("show");
     });

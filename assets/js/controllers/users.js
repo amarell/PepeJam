@@ -24,7 +24,7 @@ class User {
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/admin/users?order=%2Buser_id",
+        url: "/api/admin/users?order=%2Buser_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
@@ -74,7 +74,7 @@ class User {
   }
 
   static add(user){
-    RestClient.post("http://localhost:8080/api/admin/users", user, function(data){
+    RestClient.post("/api/admin/users", user, function(data){
       toastr.success("User has been added to the database!");
       User.get_all();
       $("#add-user").trigger("reset");
@@ -83,7 +83,7 @@ class User {
   }
 
   static update(user){
-    RestClient.put("http://localhost:8080/api/admin/user/"+user.user_id, user, function(data){
+    RestClient.put("/api/admin/user/"+user.user_id, user, function(data){
       toastr.success("User has been updated");
       User.get_all();
       $("#add-user").trigger("reset");
@@ -93,7 +93,7 @@ class User {
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/admin/user/"+id, function(data){
+    RestClient.get("/api/admin/user/"+id, function(data){
       PepeJamUtils.json2form("#add-user", data);
       $("#add-user-modal").modal("show");
     });
