@@ -24,7 +24,7 @@ class Song {
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/songs?order=%2Bsong_id",
+        url: "/api/songs?order=%2Bsong_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
@@ -75,7 +75,7 @@ class Song {
   }
 
   static play(song_id){
-    RestClient.get("http://localhost:8080/api/song/"+song_id, function(data){
+    RestClient.get("/api/song/"+song_id, function(data){
       console.log(data);
       var audio = document.getElementById("audioPlayer");
       var source = document.getElementById("song-url-source");
@@ -88,7 +88,7 @@ class Song {
         $("#cover-image").attr("src", data.cover_url);
       }
 
-      RestClient.get("http://localhost:8080/api/artist/"+data.artist_id, function(result){
+      RestClient.get("/api/artist/"+data.artist_id, function(result){
         var artist = result.artist_name;
         console.log(artist);
         $("#play-song-modal-song-title").text(data.song_name + " - " + artist);
@@ -99,7 +99,7 @@ class Song {
   }
 
   static add(song){
-    RestClient.post("http://localhost:8080/api/songs", song, function(data){
+    RestClient.post("/api/songs", song, function(data){
       toastr.success("Song has been added to the database!");
       Song.get_all();
       $("#add-song").trigger("reset");
@@ -108,7 +108,7 @@ class Song {
   }
 
   static update(song){
-    RestClient.put("http://localhost:8080/api/song/"+song.song_id, song, function(data){
+    RestClient.put("/api/song/"+song.song_id, song, function(data){
       toastr.success("Song has been updated");
       Song.get_all();
       $("#add-song").trigger("reset");
@@ -118,7 +118,7 @@ class Song {
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/song/"+id, function(data){
+    RestClient.get("/api/song/"+id, function(data){
       PepeJamUtils.json2form("#add-song", data);
       $("#add-song-modal").modal("show");
     });

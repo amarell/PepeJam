@@ -24,7 +24,7 @@ class Album {
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/user/albums?order=%2Bartist_id",
+        url: "/api/user/albums?order=%2Bartist_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
@@ -68,7 +68,7 @@ class Album {
   }
 
   static add(album){
-    RestClient.post("http://localhost:8080/api/admin/albums", album, function(data){
+    RestClient.post("/api/admin/albums", album, function(data){
       toastr.success("Album has been added to the database!");
       Album.get_all();
       $("#add-album").trigger("reset");
@@ -77,7 +77,7 @@ class Album {
   }
 
   static update(album){
-    RestClient.put("http://localhost:8080/api/admin/album/"+album.album_id, album, function(data){
+    RestClient.put("/api/admin/album/"+album.album_id, album, function(data){
       toastr.success("Album has been updated");
       Album.get_all();
       $("#add-album").trigger("reset");
@@ -87,7 +87,7 @@ class Album {
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/user/album/"+id, function(data){
+    RestClient.get("/api/user/album/"+id, function(data){
       PepeJamUtils.json2form("#add-album", data);
       $("#add-album-modal").modal("show");
     });

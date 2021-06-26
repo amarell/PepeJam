@@ -24,7 +24,7 @@ class Artist {
       "bDestroy": true,
       "pagingType": "simple",
       "ajax": {
-        url: "http://localhost:8080/api/artists?order=%2Bartist_id",
+        url: "/api/artists?order=%2Bartist_id",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function(resp){
@@ -68,7 +68,7 @@ class Artist {
   }
 
   static add(artist){
-    RestClient.post("http://localhost:8080/api/admin/artists", artist, function(data){
+    RestClient.post("/api/admin/artists", artist, function(data){
       toastr.success("Artist has been added to the database!");
       Artist.get_all();
       $("#add-artist").trigger("reset");
@@ -77,7 +77,7 @@ class Artist {
   }
 
   static update(artist){
-    RestClient.put("http://localhost:8080/api/admin/artist/"+artist.artist_id, artist, function(data){
+    RestClient.put("/api/admin/artist/"+artist.artist_id, artist, function(data){
       toastr.success("Artist has been updated");
       Artist.get_all();
       $("#add-artist").trigger("reset");
@@ -87,7 +87,7 @@ class Artist {
   }
 
   static pre_edit(id){
-    RestClient.get("http://localhost:8080/api/artist/"+id, function(data){
+    RestClient.get("/api/artist/"+id, function(data){
       PepeJamUtils.json2form("#add-artist", data);
       $("#add-artist-modal").modal("show");
     });

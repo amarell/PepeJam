@@ -65,7 +65,7 @@ class Login {
   static forgot_password() {
     $("#forgot-link").prop("disabled", true);
 
-    RestClient.post("http://localhost:8080/api/forgot", PepeJamUtils.jsonize_form("#forgot-form"), function(data){
+    RestClient.post("/api/forgot", PepeJamUtils.jsonize_form("#forgot-form"), function(data){
       console.log(data);
       $("#forgot-form-container").addClass("hidden");
       $("#form-alert").removeClass("hidden");
@@ -80,7 +80,7 @@ class Login {
 
   static change_password() {
     $("#change-link").prop("disabled", true);
-    RestClient.post("http://localhost:8080/api/reset", PepeJamUtils.jsonize_form("#change-password-form"), function(data){
+    RestClient.post("/api/reset", PepeJamUtils.jsonize_form("#change-password-form"), function(data){
       window.localStorage.setItem("token", data.token);
       window.location = "index.html";
     }, function(jqXHR, textStatus, errorThrown){
