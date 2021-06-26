@@ -37,7 +37,7 @@ class Login {
 
   static register() {
     $("#register-link").prop("disabled", true);
-    RestClient.post("http://localhost:8080/api/register", PepeJamUtils.jsonize_form("#register_form"), function(data){
+    RestClient.post("/api/register", PepeJamUtils.jsonize_form("#register_form"), function(data){
       console.log(data);
       $("#register-form-container").addClass("hidden");
       $("#form-alert").removeClass("hidden");
@@ -50,7 +50,7 @@ class Login {
 
   static login(){
     $("#login-link").prop("disabled", true);
-    RestClient.post("http://localhost:8080/api/login", PepeJamUtils.jsonize_form("#login-form"), function(data){
+    RestClient.post("/api/login", PepeJamUtils.jsonize_form("#login-form"), function(data){
       toastr.success("Login successful!");
       console.log(data);
       window.localStorage.setItem("token", data.token);
