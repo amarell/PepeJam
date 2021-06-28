@@ -70,7 +70,11 @@ class Song {
             { "data": "song_duration" },
             { "data": "number_of_plays" },
             { "data": "artist_id" },
-            { "data": "artist_name" }
+            { "data": "artist_name",
+              "render": function ( data, type, row, meta ) {
+                return row.artist_name;
+              }
+            }
         ]
       });
   }
