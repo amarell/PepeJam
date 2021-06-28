@@ -22,7 +22,7 @@
                               <th>Name</th>
                               <th class="desktop" >Duration</th>
                               <th class="desktop" >Number of plays</th>
-                              <th class="desktop" >Artist id</th>
+                              <th class="desktop" >Name of Artist</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -45,6 +45,7 @@
         <div class="modal-content">
           <form role="form" id="add-song">
               <input type="hidden" name="song_id" />
+              <input type="hidden" name="song_url" />
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Add song to the database</h4>
@@ -66,6 +67,11 @@
                       <label>Artist ID</label>
                       <input type="text" name="artist_id" class="form-control" placeholder="Id of the artist" required>
                   </div>
+                  <div class="form-group">
+                      <label>Upload Song</label>
+                      <input id="song-upload-input" name="file" type="file" multiple>
+                  </div>
+                  <button id="upload-song-button" type="button" class="btn btn-default" onclick="Upload.fileToBase64(document.getElementById('song-upload-input'))">Upload</button>
                 </div>
 
               <div class="modal-footer">

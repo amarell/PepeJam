@@ -15,7 +15,7 @@
                     <label>File input</label>
                     <input id="input-form" name="file" type="file" multiple>
                 </div>
-                <button type="submit" class="btn btn-default" onclick="fileToBase64(document.getElementById('input-form'))">Upload</button>
+                <button type="submit" class="btn btn-default" onclick="Upload.fileToBase64(document.getElementById('input-form'))">Upload</button>
               </form>
             </div>
         </div>
@@ -26,11 +26,7 @@
 <!-- /#page-wrapper -->
 
 <script type="text/javascript">
-    function test() {
-      console.dir(document.getElementById("input-form").files.length);
-    }
-
-    function fileToBase64(event) {
+    /*function fileToBase64(event) {
       if(event.files.length == 0){
         toastr.error("Choose a file to upload!");
         return 0;
@@ -66,7 +62,7 @@
           };
       })(f);
       // Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+      reader.readAsDataURL(f);*/
     }
 
 </script>
