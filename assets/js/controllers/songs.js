@@ -69,7 +69,7 @@ class Song {
             },
             { "data": "song_duration" },
             { "data": "number_of_plays" },
-            { "data": "artist_name" }
+            { "data": "artist_id" }
         ]
       });
   }
