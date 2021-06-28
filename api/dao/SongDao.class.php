@@ -32,7 +32,7 @@ class SongDao extends BaseDao{
                            []);
     } else {
       return $this->query("SELECT S.song_id, S.song_name, S.song_duration,
-                           S.number_of_plays, A.artist_name
+                           S.number_of_plays, S.artist_id, A.artist_name
                            FROM songs S
                            JOIN artists A ON S.artist_id = A.artist_id
                            WHERE LOWER(song_name) LIKE LOWER('%".$search."%')
