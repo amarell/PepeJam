@@ -37,7 +37,7 @@ class Login {
 
   static register() {
     $("#register-link").prop("disabled", true);
-    RestClient.post("/api/register", PepeJamUtils.jsonize_form("#register_form"), function(data){
+    RestClient.post("/api/register", PepeJamUtils.jsonize_form("#register-form"), function(data){
       console.log(data);
       $("#register-form-container").addClass("hidden");
       $("#form-alert").removeClass("hidden");
