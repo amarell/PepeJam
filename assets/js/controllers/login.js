@@ -44,7 +44,7 @@ class Login {
       $("#form-alert .alert").html(data.message);
     }, function(jqXHR, textStatus, errorThrown){
       $("#register-link").prop("disabled", false);
-      toastr.error(error.responseJSON.message);
+      toastr.error(jqXHR.responseJSON.message);
     });
   }
 
@@ -64,17 +64,14 @@ class Login {
 
   static forgot_password() {
     $("#forgot-link").prop("disabled", true);
-
     RestClient.post("/api/forgot", PepeJamUtils.jsonize_form("#forgot-form"), function(data){
       console.log(data);
       $("#forgot-form-container").addClass("hidden");
-      $("#form-alert").removeClass("hidden");
-      $("#form-alert .alert").html(data.message);
+      toastr.success(data.message);
     }, function(jqXHR, textStatus, errorThrown){
       $("#forgot-link").prop("disabled", false);
-      // possible mistake, maybe the following line should be deleted
       $("#forgot-form-container").addClass("hidden");
-      toastr.error(error.responseJSON.message);
+      toastr.error(jqXHR.responseJSON.message);
     });
   }
 
@@ -85,7 +82,7 @@ class Login {
       window.location = "index.html";
     }, function(jqXHR, textStatus, errorThrown){
       $("#change-link").prop("disabled", false);
-      toastr.error(error.responseJSON.message);
+      toastr.error(jqXHR.responseJSON.message);
     });
   }
 }
