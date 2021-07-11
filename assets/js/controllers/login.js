@@ -67,7 +67,7 @@ class Login {
     RestClient.post("/api/forgot", PepeJamUtils.jsonize_form("#forgot-form"), function(data){
       console.log(data);
       $("#forgot-form-container").addClass("hidden");
-      toastr.success(data.message);
+      toastr.success("Reset token has been sent to your email.");
     }, function(jqXHR, textStatus, errorThrown){
       $("#forgot-link").prop("disabled", false);
       $("#forgot-form-container").addClass("hidden");
